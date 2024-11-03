@@ -1,0 +1,34 @@
+{
+  "name": "techbook-template-cli",
+  "version": "0.0.1",
+  "type": "module",
+  "bin": {
+    "dev": "index.js",
+    "build": "index.js",
+    "kdp": "index.js"
+  },
+  "files": [
+    "index.js",
+    "dist"
+  ],
+  "scripts": {
+    "dev": "unbuild --stub",
+    "build": "unbuild",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kght6123/techbook-template-cli.git",
+    "directory": "/"
+  },
+  "bugs": {
+    "url": "https://github.com/kght6123/techbook-template-cli/issues"
+  },
+  "homepage": "https://github.com/kght6123/techbook-template-cli/tree/main/",
+  "author": "kght6123",
+  "license": "MIT",
+  "devDependencies": {
+    "unbuild": "^3.0.0-rc.11"
+  }
+}
