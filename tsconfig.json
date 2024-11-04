@@ -2,14 +2,21 @@
   "include": ["build.config.ts", "src", "__tests__"],
   "compilerOptions": {
     "outDir": "dist",
-    "target": "ES2022",
-    "module": "ES2020",
+    "target": "ESNext",
+    "lib": [
+      "es2021",
+      "ESNext",
+      "dom",
+    ],
+    "module": "ESNext",
+    "allowSyntheticDefaultImports": true,
     "moduleResolution": "Bundler",
     "strict": true,
     "skipLibCheck": true,
     "declaration": false,
     "sourceMap": false,
     "noUnusedLocals": true,
+    "resolveJsonModule": true,
     "esModuleInterop": true
   }
 }
