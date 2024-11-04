@@ -28,7 +28,7 @@
   "homepage": "https://github.com/kght6123/techbook-template-cli/tree/main/",
   "author": "kght6123",
   "license": "MIT",
-  "devDependencies": {
+  "dependencies": {
     "unbuild": "^3.0.0-rc.11"
   }
 }
