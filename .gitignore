@@ -1,1 +1,13 @@
+# Node.js
 node_modules
+
+# VivlioStyle
+.vivliostyle
+vivliostyle.config.cjs
+
+# Lockfile
+dist/lockfile
+src/lockfile
+
+# PDF
+*.pdf
