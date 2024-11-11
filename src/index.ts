@@ -1,8 +1,4 @@
 import { Command } from "commander";
-import spawn from "cross-spawn";
-import waitOn from "wait-on";
-
-console.log("Hello, world!", process.argv);
 
 const program = new Command();
 
@@ -13,10 +9,10 @@ program
 
 program
   .command("dev")
-  .description("techbook dev server")
+  .description("techbook dev")
   .option("-ph, --h3-port <port>", "h3 server port number", "3000")
   .option("-ps, --sync-port <port>", "sync port number", "3001")
-  .option("-kdp, --kindle-direct-print <kindleDirectPrint>", "kindle direct print mode", "false")
+  .option("-kdp, --kindle-direct-print", "kindle direct print mode", "false")
   .action(
     async ({ h3Port, syncPort }: { h3Port: string; syncPort: string }) => {
       console.info("dev", h3Port, syncPort);
@@ -32,17 +28,17 @@ program
 
 program
   .command("build")
-  .description("techbook build pdf")
-  .action(async () => {
-    console.info("build");
-  });
-
-program
-  .command("kdp")
-  .description("techbook build pdf for kindle direct publishing")
-  .action(async () => {
-    console.info("kdp");
-  });
+  .description("techbook build")
+  .option("-ph, --h3-port <port>", "h3 server port number", "3000")
+  .option("-ps, --sync-port <port>", "sync port number", "3001")
+  .option("-kdp, --kindle-direct-print", "kindle direct print mode", "false")
+  .action(
+    async ({ h3Port, syncPort }: { h3Port: string; syncPort: string }) => {
+      console.info("build", h3Port, syncPort);
+      const main = (await import("./main")).default;
+      main();
+    },
+  );
 
 program
   .command("viewer")
@@ -59,13 +55,13 @@ program
   .option("-s, --src <src>", "tailwind src file name", "global.css")
   .action(async ({ src }: { src: string }) => {
     console.info("tailwind");
-    await waitOn({
+    await (await import("wait-on")).default({
       interval: 500,
       resources: [
         "./dist/lockfile",
       ],
     });
-    const result = spawn.sync("npx", ["--yes", "tailwindcss@latest", "-i", `./src/${src}`, "-o", "./dist/global.css", "--watch", "--no-autoprefixer", "--postcss", "./postcss.config.cjs"], { stdio: "inherit" });
+    const result = (await import("cross-spawn")).default.sync("npx", ["--yes", "tailwindcss@latest", "-i", `./src/${src}`, "-o", "./dist/global.css", "--watch", "--no-autoprefixer", "--postcss", "./postcss.config.cjs"], { stdio: "inherit" });
     console.info(result);
   });
 
@@ -76,7 +72,7 @@ program
   .option("-pp, --proxy-port <proxyPort>", "browser proxy port number", "3000")
   .action(async ({ port, proxyPort }: { port: string, proxyPort: string }) => {
     console.info("browser");
-    await waitOn({
+    await (await import("wait-on")).default({
       interval: 500,
       resources: [
         "./dist/global.css",

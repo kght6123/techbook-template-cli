@@ -1,51 +1,43 @@
 import { Command } from 'commander';
-import spawn from 'cross-spawn';
-import waitOn from 'wait-on';
 
-console.log("Hello, world!", process.argv);
 const program = new Command();
 program.name("techbook-template-cli").description("TechBook Template CLI utilities.").version((await import('./chunks/package.mjs')).version);
-program.command("dev").description("techbook dev server").option("-ph, --h3-port <port>", "h3 server port number", "3000").option("-ps, --sync-port <port>", "sync port number", "3001").option("-kdp, --kindle-direct-print <kindleDirectPrint>", "kindle direct print mode", "false").action(
+program.command("dev").description("techbook dev").option("-ph, --h3-port <port>", "h3 server port number", "3000").option("-ps, --sync-port <port>", "sync port number", "3001").option("-kdp, --kindle-direct-print", "kindle direct print mode", "false").action(
   async ({ h3Port, syncPort }) => {
     console.info("dev", h3Port, syncPort);
     const main = (await import('./chunks/main.mjs')).default;
     main();
-    (await import('chokidar')).watch(["docs/"]).on("add", async (event, path) => {
-      console.info(event, path);
-      main();
-    }).on("change", async (event, path) => {
-      console.info(event, path);
-      main();
-    }).on("unlink", async (event, path) => {
+    (await import('chokidar')).watch(["docs/"]).on("change", async (event, path) => {
       console.info(event, path);
       main();
     });
   }
 );
-program.command("build").description("techbook build pdf").action(async () => {
-  console.info("build");
-});
-program.command("kdp").description("techbook build pdf for kindle direct publishing").action(async () => {
-  console.info("kdp");
-});
+program.command("build").description("techbook build").option("-ph, --h3-port <port>", "h3 server port number", "3000").option("-ps, --sync-port <port>", "sync port number", "3001").option("-kdp, --kindle-direct-print", "kindle direct print mode", "false").action(
+  async ({ h3Port, syncPort }) => {
+    console.info("build", h3Port, syncPort);
+    const main = (await import('./chunks/main.mjs')).default;
+    main();
+  }
+);
 program.command("viewer").description("techbook viewer").option("-p, --port <port>", "express server port number", "3000").action(async ({ port }) => {
   console.info("viewer");
   await (await import('./chunks/viewer.mjs')).default({ port: parseInt(port) });
 });
 program.command("tailwind").description("techbook tailwind").option("-s, --src <src>", "tailwind src file name", "global.css").action(async ({ src }) => {
   console.info("tailwind");
-  await waitOn({
+  await (await import('wait-on')).default({
     interval: 500,
     resources: [
       "./dist/lockfile"
     ]
   });
-  const result = spawn.sync("npx", ["--yes", "tailwindcss@latest", "-i", `./src/${src}`, "-o", "./dist/global.css", "--watch", "--no-autoprefixer", "--postcss", "./postcss.config.cjs"], { stdio: "inherit" });
+  const result = (await import('cross-spawn')).default.sync("npx", ["--yes", "tailwindcss@latest", "-i", `./src/${src}`, "-o", "./dist/global.css", "--watch", "--no-autoprefixer", "--postcss", "./postcss.config.cjs"], { stdio: "inherit" });
   console.info(result);
 });
 program.command("browser").description("techbook browser").option("-p, --port <port>", "browser sync port number", "3001").option("-pp, --proxy-port <proxyPort>", "browser proxy port number", "3000").action(async ({ port, proxyPort }) => {
   console.info("browser");
-  await waitOn({
+  await (await import('wait-on')).default({
     interval: 500,
     resources: [
       "./dist/global.css",

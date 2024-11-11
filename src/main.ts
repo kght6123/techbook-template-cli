@@ -27,6 +27,7 @@ import { docsHeadingList, rightPillarChapterList, tocCompile } from "./toc";
 export default function main() {
   // 引数に"-kdp"がある場合はtrueにする
   const isKDP = process.argv.indexOf("-kdp") >= 0;
+  if (isKDP) console.log("run kindle direct publishing mode.");
 
   // Handlebarsにヘルパーを登録する
   chatRegisterHelper();

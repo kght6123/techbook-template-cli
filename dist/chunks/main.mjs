@@ -1344,6 +1344,7 @@ Handlebars.registerHelper("default", function(options) {
 
 function main() {
   const isKDP = process.argv.indexOf("-kdp") >= 0;
+  if (isKDP) console.log("run kindle direct publishing mode.");
   chatRegisterHelper();
   docrefRegisterHelper();
   appendixRegisterHelper();
