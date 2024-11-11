@@ -672,30 +672,31 @@ const handlebarCompileOptions = {
   noEscape: true
   // HTMLエスケープをしない
 };
-const distDir = "dist";
-const docsDir = "docs";
-const lockFileDistPath = "dist/lockfile";
+const cwd = process.cwd();
+const distDir = cwd + "/dist";
+const docsDir = cwd + "/docs";
+const lockFileDistPath = distDir + "/lockfile";
 const chapterTemplateHtmlPath = "src/chapter-template.html";
 const simpleChapterTemplateHtmlPath = "src/simplechapter-template.html";
 const appendixTitle = "Appendix";
-const appendixDistPath = "dist/appendix.dist.html";
+const appendixDistPath = distDir + "/appendix.dist.html";
 const appendixTemplateHtmlPath = "src/appendix-template.html";
-const colophonDistPath = "dist/colophon.dist.html";
+const colophonDistPath = distDir + "/colophon.dist.html";
 const colophonTemplateHtmlPath = "src/colophon-template.html";
-const profileDistPath = "dist/profile.dist.html";
+const profileDistPath = distDir + "/profile.dist.html";
 const profileTemplateHtmlPath = "src/profile-template.html";
-const introductionDocPath = "docs/_introduction.md";
-const finallyDocPath = "docs/_finally.md";
-const introductionDistPath = "dist/_introduction.dist.html";
-const finallyDistPath = "dist/_finally.dist.html";
+const introductionDocPath = docsDir + "/_introduction.md";
+const finallyDocPath = docsDir + "/_finally.md";
+const introductionDistPath = distDir + "/_introduction.dist.html";
+const finallyDistPath = distDir + "/_finally.dist.html";
 const introductionTemplateHtmlPath = "src/introduction-template.html";
 const simpleIntroductionTemplateHtmlPath = "src/simpleintroduction-template.html";
-const tocDistPath = "dist/toc.dist.html";
+const tocDistPath = distDir + "/toc.dist.html";
 const coverTemplateHtmlPath = "src/cover-template.html";
-const frontCoverDistPath = "dist/front-cover.dist.html";
-const backCoverDistPath = "dist/back-cover.dist.html";
-const startCoverDistPath = "dist/start-cover.dist.html";
-const endCoverDistPath = "dist/end-cover.dist.html";
+const frontCoverDistPath = distDir + "/front-cover.dist.html";
+const backCoverDistPath = distDir + "/back-cover.dist.html";
+const startCoverDistPath = distDir + "/start-cover.dist.html";
+const endCoverDistPath = distDir + "/end-cover.dist.html";
 const processorRehype = unified().use(remarkParse).use(remarkFrontmatter, { type: "yaml", marker: "-" }).use(() => (_tree, file) => {
   matter(file, { strip: true });
 }).use(remarkGfm).use(simplePlantUML).use(imageAttributesToTitlePlugin).use(remarkRehype, { allowDangerousHtml: true }).use(imageApplyAttributesFromTitlePlugin).use(rehypeSlug).use(rehypeMermaid, {
