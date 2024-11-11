@@ -37,7 +37,7 @@ export const handlebarCompileOptions: CompileOptions = {
   noEscape: true, // HTMLエスケープをしない
 };
 
-const cwd = process.cwd();
+export const cwd = process.cwd();
 
 export const vivliostyleConfig = cwd + "/vivliostyle.config.cjs";
 export const publicationJson = cwd + "/dist/publication.json";
