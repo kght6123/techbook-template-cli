@@ -1,6 +1,5 @@
 import fs from "fs";
 import Handlebars from "handlebars";
-import config from "../techbook.config";
 import {
   finallyDistPath,
   finallyDocPath,
@@ -10,6 +9,7 @@ import {
   introductionTemplateHtmlPath,
   simpleIntroductionTemplateHtmlPath,
   processor,
+  config,
 } from "./constants";
 import { rightPillarChapterList } from "./toc";
 

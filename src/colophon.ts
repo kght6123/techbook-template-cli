@@ -1,6 +1,6 @@
 import fs from "fs";
 import Handlebars from "handlebars";
-import miraiBookConfig from "../techbook.config";
+import { config } from "./constants";
 import {
   colophonDistPath,
   colophonTemplateHtmlPath,
@@ -15,6 +15,6 @@ export const colophonCompile = () => {
   );
 
   // HTMLのテンプレートへ埋め込む
-  const html = colophonTemplateHtml({ config: miraiBookConfig });
+  const html = colophonTemplateHtml({ config });
   fs.writeFileSync(colophonDistPath, html);
 };

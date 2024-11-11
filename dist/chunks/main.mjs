@@ -13,42 +13,8 @@ import remarkRehype from 'remark-rehype';
 import { unified } from 'unified';
 import { matter } from 'vfile-matter';
 import QRCode from 'qrcode';
+import { createJiti } from 'jiti';
 import path from 'path';
-
-const config = {
-  size: "JIS-B5",
-  title: "(\u672C\u306E\u30BF\u30A4\u30C8\u30EB)",
-  author: "(\u8457\u8005\u540D)",
-  publisher: "(\u30B5\u30FC\u30AF\u30EB\u540D)",
-  printer: "(\u5370\u5237\u6240\u540D)",
-  editions: [
-    {
-      name: "\u521D\u7248\u767A\u884C",
-      datetime: "2024-05-21",
-      datetimeView: "2024\u5E745\u670821\u65E5",
-      version: "v1.0.0"
-    }
-  ],
-  profiles: [
-    {
-      position: "(\u5F79\u8077\u306A\u3069)",
-      name: "(\u540D\u524D)",
-      description: `\u81EA\u5DF1\u7D39\u4ECB\u6587\u3092\u66F8\u304F<br />
-br\u30BF\u30B0\u3067\u6539\u884C\u304C\u3067\u304D\u307E\u3059\u3002`,
-      image: "../images/(\u30D7\u30ED\u30D5\u30A1\u30A4\u30EB\u753B\u50CF\u3092\u7F6E\u3044\u3066\u6307\u5B9A\u3059\u308B).png"
-    }
-  ],
-  cover: {
-    // TODO: 表紙画像が必要な場合は置いて指定してください
-    // front: "front-cover.png",
-    // back: "back-cover.png",
-    // start: "start-cover.png",
-    // end: "end-cover.png",
-  },
-  // TODO: 付録がない場合は false にしてください
-  appendix: true,
-  copyright: "(\u30B3\u30D4\u30FC\u30E9\u30A4\u30C8\u3092\u66F8\u304F)"
-};
 
 function getDefaultExportFromCjs (x) {
 	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
@@ -668,11 +634,14 @@ const tableApplyTitlePlugin = () => {
   };
 };
 
+const jiti = createJiti(import.meta.url);
 const handlebarCompileOptions = {
   noEscape: true
   // HTMLエスケープをしない
 };
 const cwd = process.cwd();
+const vivliostyleConfig = cwd + "/vivliostyle.config.cjs";
+const publicationJson = cwd + "/dist/publication.json";
 const distDir = cwd + "/dist";
 const docsDir = cwd + "/docs";
 const lockFileDistPath = distDir + "/lockfile";
@@ -722,6 +691,7 @@ const processorRehype = unified().use(remarkParse).use(remarkFrontmatter, { type
 const processor = processorRehype.use(rehypeStringify, {
   allowDangerousHtml: true
 });
+const config = await jiti.import(process.cwd() + "/techbook.config.ts", { default: true });
 
 const appendixMap = /* @__PURE__ */ new Map();
 const templateHtml$1 = Handlebars.compile(
@@ -875,7 +845,7 @@ const colophonCompile = () => {
     fs.readFileSync(colophonTemplateHtmlPath).toString(),
     handlebarCompileOptions
   );
-  const html = colophonTemplateHtml({ config: config });
+  const html = colophonTemplateHtml({ config });
   fs.writeFileSync(colophonDistPath, html);
 };
 
@@ -1212,7 +1182,7 @@ function generateVivlioStyleConfig({
     toc: false
   };
   fs.writeFileSync(
-    "vivliostyle.config.cjs",
+    vivliostyleConfig,
     `module.exports = ${JSON.stringify(_config, null, 0).replace(
       /"([^"]+)":/g,
       "$1:"
@@ -1246,7 +1216,7 @@ function generateVivlioStyleConfig({
     resources: [],
     links: []
   };
-  fs.writeFileSync(`${distDir}/publication.json`, JSON.stringify(manifest));
+  fs.writeFileSync(publicationJson, JSON.stringify(manifest));
 }
 
 const introductionTemplateHtml = Handlebars.compile(
@@ -1301,7 +1271,7 @@ const profileCompile = () => {
     fs.readFileSync(profileTemplateHtmlPath).toString(),
     handlebarCompileOptions
   );
-  const html = profileTemplateHtml({ config: config });
+  const html = profileTemplateHtml({ config });
   fs.writeFileSync(profileDistPath, html);
 };
 

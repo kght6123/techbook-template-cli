@@ -46,6 +46,7 @@
     "h3": "^1.11.1",
     "handlebars": "^4.7.8",
     "hast-util-to-text": "^4.0.2",
+    "jiti": "^2.4.0",
     "listhen": "^1.9.0",
     "lodash": "^4.17.21",
     "mermaid-isomorphic": "^2.2.1",

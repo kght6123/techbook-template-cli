@@ -2,7 +2,6 @@ import fs from "fs";
 import Handlebars from "handlebars";
 import { Heading } from "mdast";
 
-import config from "../techbook.config";
 import { appendixCompile, appendixRegisterHelper } from "./appendix";
 import { pageBreakRegisterHelper } from "./breakBefore";
 import { chatRegisterHelper } from "./chat";
@@ -13,6 +12,7 @@ import {
   lockFileDistPath,
   processor,
   simpleChapterTemplateHtmlPath,
+  config,
 } from "./constants";
 import { coverCompile } from "./cover";
 import { docrefRegisterHelper } from "./docref";

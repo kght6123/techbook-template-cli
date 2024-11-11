@@ -1,6 +1,5 @@
 import fs from "fs";
 import Handlebars from "handlebars";
-import config from "../techbook.config";
 import {
   backCoverDistPath,
   coverTemplateHtmlPath,
@@ -8,6 +7,7 @@ import {
   frontCoverDistPath,
   handlebarCompileOptions,
   startCoverDistPath,
+  config,
 } from "./constants";
 
 // HTMLのテンプレートをHandlebarsで読み込む

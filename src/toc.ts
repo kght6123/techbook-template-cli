@@ -2,8 +2,7 @@ import fs from "fs";
 import path from "path";
 import _ from "lodash";
 import { Heading, Text } from "mdast";
-import config from "../techbook.config";
-import { distDir, docsDir, processorRehype, tocDistPath } from "./constants";
+import { distDir, docsDir, processorRehype, tocDistPath, config } from "./constants";
 
 import { slug } from "github-slugger";
 import {

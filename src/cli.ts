@@ -1,7 +1,7 @@
 import { version } from "../package.json";
 import { Command } from "commander";
 import concurrently from "concurrently";
-import config from "../techbook.config";
+import { config } from "./constants";
 
 const program = new Command();
 const CSS_FILE_MAP = {

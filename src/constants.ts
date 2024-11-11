@@ -29,12 +29,18 @@ import imageAttributesToTitlePlugin from "./imageAttributesToTitlePlugin";
 import mermaidApplyTitlePlugin from "./mermaidApplyTitlePlugin";
 import tableApplyTitlePlugin from "./tableApplyTitlePlugin";
 
+import { createJiti } from "jiti";
+const jiti = createJiti(import.meta.url);
+
 // Handlebarsのオプション
 export const handlebarCompileOptions: CompileOptions = {
   noEscape: true, // HTMLエスケープをしない
 };
 
 const cwd = process.cwd();
+
+export const vivliostyleConfig = cwd + "/vivliostyle.config.cjs";
+export const publicationJson = cwd + "/dist/publication.json";
 
 export const distDir = cwd + "/dist";
 export const docsDir = cwd + "/docs";
@@ -119,3 +125,33 @@ export const processorRehype = unified()
 export const processor = processorRehype.use(rehypeStringify, {
   allowDangerousHtml: true,
 });
+
+export interface MiraiBookConfig {
+  size: "JIS-B5" | "105mm 173mm";
+  title: string;
+  author: string;
+  publisher: string;
+  printer: string;
+  editions: {
+    name: string;
+    datetime: string;
+    datetimeView: string;
+    version: string;
+  }[];
+  profiles: {
+    position: string;
+    name: string;
+    description: string;
+    image: string;
+  }[];
+  cover: {
+    front?: string;
+    back?: string;
+    start?: string;
+    end?: string;
+  };
+  appendix?: boolean;
+  copyright: string;
+}
+
+export const config = (await jiti.import(process.cwd() + "/techbook.config.ts", { default: true })) as MiraiBookConfig;

@@ -1,10 +1,10 @@
 import fs from "fs";
 import Handlebars from "handlebars";
-import miraiBookConfig from "../techbook.config";
 import {
   handlebarCompileOptions,
   profileDistPath,
   profileTemplateHtmlPath,
+  config,
 } from "./constants";
 
 export const profileCompile = () => {
@@ -15,6 +15,6 @@ export const profileCompile = () => {
   );
 
   // HTMLのテンプレートへ埋め込む
-  const html = profileTemplateHtml({ config: miraiBookConfig });
+  const html = profileTemplateHtml({ config });
   fs.writeFileSync(profileDistPath, html);
 };

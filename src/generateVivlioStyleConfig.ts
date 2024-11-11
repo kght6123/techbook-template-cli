@@ -1,10 +1,8 @@
 import fs from "fs";
-import config from "../techbook.config";
 import {
   appendixDistPath,
   backCoverDistPath,
   colophonDistPath,
-  distDir,
   endCoverDistPath,
   finallyDistPath,
   frontCoverDistPath,
@@ -12,6 +10,9 @@ import {
   profileDistPath,
   startCoverDistPath,
   tocDistPath,
+  config,
+  vivliostyleConfig,
+  publicationJson,
 } from "./constants";
 import { docsHeadingList } from "./toc";
 
@@ -47,7 +48,7 @@ export default function generateVivlioStyleConfig({
     toc: false,
   };
   fs.writeFileSync(
-    "vivliostyle.config.cjs",
+    vivliostyleConfig,
     `module.exports = ${JSON.stringify(_config, null, 0).replace(
       /"([^"]+)":/g,
       "$1:",
@@ -82,5 +83,5 @@ export default function generateVivlioStyleConfig({
     resources: [],
     links: [],
   };
-  fs.writeFileSync(`${distDir}/publication.json`, JSON.stringify(manifest));
+  fs.writeFileSync(publicationJson, JSON.stringify(manifest));
 }
