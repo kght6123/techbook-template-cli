@@ -39,11 +39,11 @@ export const handlebarCompileOptions: CompileOptions = {
 
 export const cwd = process.cwd();
 
-export const vivliostyleConfig = cwd + "/vivliostyle.config.cjs";
-export const publicationJson = cwd + "/dist/publication.json";
+export const vivliostyleConfig = "./vivliostyle.config.cjs";
+export const publicationJson = "./dist/publication.json";
 
-export const distDir = cwd + "/dist";
-export const docsDir = cwd + "/docs";
+export const distDir = "./dist";
+export const docsDir = "./docs";
 
 export const lockFileSrcPath = "src/lockfile";
 export const lockFileDistPath = distDir + "/lockfile";

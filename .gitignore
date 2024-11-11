@@ -15,3 +15,4 @@ src/lockfile
 # Build Files
 dist/*.dist.html
 dist/publication.json
+dist/global.css

@@ -637,10 +637,10 @@ const handlebarCompileOptions = {
   // HTMLエスケープをしない
 };
 const cwd = process.cwd();
-const vivliostyleConfig = cwd + "/vivliostyle.config.cjs";
-const publicationJson = cwd + "/dist/publication.json";
-const distDir = cwd + "/dist";
-const docsDir = cwd + "/docs";
+const vivliostyleConfig = "./vivliostyle.config.cjs";
+const publicationJson = "./dist/publication.json";
+const distDir = "./dist";
+const docsDir = "./docs";
 const lockFileDistPath = distDir + "/lockfile";
 const chapterTemplateHtmlPath = "src/chapter-template.html";
 const simpleChapterTemplateHtmlPath = "src/simplechapter-template.html";
