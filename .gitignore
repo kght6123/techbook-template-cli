@@ -11,3 +11,7 @@ src/lockfile
 
 # PDF
 *.pdf
+
+# Build Files
+dist/*.dist.html
+dist/publication.json
