@@ -639,7 +639,7 @@ Handlebars.registerHelper("default", function(options) {
   }
 });
 
-function main() {
+async function main() {
   const isKDP = process.argv.indexOf("-kdp") >= 0;
   if (isKDP) console.log("run kindle direct publishing mode.");
   chatRegisterHelper();
@@ -654,29 +654,28 @@ function main() {
     handlebarCompileOptions
   );
   generateVivlioStyleConfig({ isKDP });
-  const preCompile = (src, dist, slug, headings) => {
-    const h1Heading = headings?.find((v) => v.depth === 1);
-    const h2HeadingList = headings?.map((v) => v.depth === 2 && v).filter((v) => v);
+  const preCompile = async (src, dist, slug, headings) => {
+    const h1Heading = headings?.find((v2) => v2.depth === 1);
+    const h2HeadingList = headings?.map((v2) => v2.depth === 2 && v2).filter((v2) => v2);
     const markdown = fs.readFileSync(src);
     const templateMarkdown = Handlebars.compile(
       markdown.toString(),
       handlebarCompileOptions
     );
     const result = templateMarkdown({ filePath: dist });
-    processor.process(result).then((v) => {
-      const html = chapterTemplateHtml({
-        body: v.toString(),
-        inlineStyle: "",
-        slug,
-        title: h1Heading?.text,
-        h2HeadingList,
-        distPath: dist,
-        rightPillarChapterList,
-        // TODO: この目次リストもPlugin化してdataへ格納すると良いかも
-        data: v.data
-      });
-      fs.writeFileSync(dist, html);
+    const v = await processor.process(result);
+    const html = chapterTemplateHtml({
+      body: v.toString(),
+      inlineStyle: "",
+      slug,
+      title: h1Heading?.text,
+      h2HeadingList,
+      distPath: dist,
+      rightPillarChapterList,
+      // TODO: この目次リストもPlugin化してdataへ格納すると良いかも
+      data: v.data
     });
+    fs.writeFileSync(dist, html);
   };
   console.log("start preCompile.");
   coverCompile({ isKDP });
@@ -687,7 +686,7 @@ function main() {
   profileCompile();
   console.log("complete!!! init coverCompile, tocCompile.");
   for (const { src, dist, fileName, headings } of docsHeadingList) {
-    preCompile(src, dist, fileName, headings);
+    await preCompile(src, dist, fileName, headings);
     console.log("complete!!! init preCompile.", src, dist);
   }
   if (config.appendix !== false) {

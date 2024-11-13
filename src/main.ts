@@ -24,7 +24,7 @@ import "./split";
 import "./switch";
 import { docsHeadingList, rightPillarChapterList, tocCompile } from "./toc";
 
-export default function main() {
+export default async function main() {
   // 引数に"-kdp"がある場合はtrueにする
   const isKDP = process.argv.indexOf("-kdp") >= 0;
   if (isKDP) console.log("run kindle direct publishing mode.");
@@ -52,7 +52,7 @@ export default function main() {
   generateVivlioStyleConfig({ isKDP });
 
   // プレコンパイルする
-  const preCompile = (
+  const preCompile = async (
     src: string,
     dist: string,
     slug: string,
@@ -74,20 +74,19 @@ export default function main() {
     // MarkdownのテンプレートをHandlebarsで処理する
     const result = templateMarkdown({ filePath: dist });
     // MarkdownをRemarkでHTMLへ変換する
-    processor.process(result).then((v) => {
-      // HTMLのテンプレートへ埋め込む
-      const html = chapterTemplateHtml({
-        body: v.toString(),
-        inlineStyle: "",
-        slug,
-        title: h1Heading?.text,
-        h2HeadingList,
-        distPath: dist,
-        rightPillarChapterList, // TODO: この目次リストもPlugin化してdataへ格納すると良いかも
-        data: v.data,
-      });
-      fs.writeFileSync(dist, html);
+    const v = await processor.process(result)
+    // HTMLのテンプレートへ埋め込む
+    const html = chapterTemplateHtml({
+      body: v.toString(),
+      inlineStyle: "",
+      slug,
+      title: h1Heading?.text,
+      h2HeadingList,
+      distPath: dist,
+      rightPillarChapterList, // TODO: この目次リストもPlugin化してdataへ格納すると良いかも
+      data: v.data,
     });
+    fs.writeFileSync(dist, html);
   };
 
   console.log("start preCompile.");
@@ -102,7 +101,7 @@ export default function main() {
   console.log("complete!!! init coverCompile, tocCompile.");
 
   for (const { src, dist, fileName, headings } of docsHeadingList) {
-    preCompile(src, dist, fileName, headings);
+    await preCompile(src, dist, fileName, headings);
     console.log("complete!!! init preCompile.", src, dist);
     // TODO: watch mode 1 watchモードは、ファイルの変更を検知して再コンパイルする動作をする。現状のdevの方が使いやすいので、watchモードは削除する。
     // fs.watch(src, { persistent: true, recursive: false }, function(event, filename) {

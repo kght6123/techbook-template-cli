@@ -713,18 +713,20 @@ program.command("dev").description("techbook dev").option("-ph, --h3-port <port>
     });
   }
 );
-program.command("build").description("techbook build").option("-ph, --h3-port <port>", "h3 server port number", "3000").option("-ps, --sync-port <port>", "sync port number", "3001").option("-kdp, --kindle-direct-print", "kindle direct print mode", "false").action(
-  async ({ h3Port, syncPort }) => {
-    console.info("build", h3Port, syncPort);
+program.command("build").description("techbook build").option("-kdp, --kindle-direct-print", "kindle direct print mode", "false").option("-ts, --tailwind-src <tailwindSrc>", "tailwind src file name", __dirname + "/../src/" + cssSrcFileName).option("-tc, --tailwind-config <tailwindConfig>", "tailwind config file name", __dirname + "/../tailwind.config.ts").option("-tp, --tailwind-postcss <tailwindPostcss>", "postcss config file name", __dirname + "/../postcss.config.cjs").action(
+  async ({ tailwindSrc, tailwindConfig, tailwindPostcss }) => {
+    console.info("build", tailwindSrc, tailwindConfig, tailwindPostcss);
     const main = (await import('./chunks/main.mjs')).default;
-    main();
+    await main();
+    (await import('cross-spawn')).default.sync("npx", ["--yes", "tailwindcss@latest", "-i", tailwindSrc, "-o", "./dist/global.css", "--no-autoprefixer", "--postcss", tailwindPostcss, "--config", tailwindConfig], { stdio: "inherit" });
+    (await import('cross-spawn')).default.sync("npx", ["--yes", "@vivliostyle/cli", "build", "--style", "./dist/global.css"], { stdio: "inherit" });
   }
 );
 program.command("viewer").description("techbook viewer").option("-p, --port <port>", "express server port number", "3000").action(async ({ port }) => {
   console.info("viewer");
   await (await import('./chunks/viewer.mjs')).default({ port: parseInt(port) });
 });
-program.command("tailwind").description("techbook tailwind").option("-s, --src <src>", "tailwind src file name", __dirname + "/../src/" + cssSrcFileName).option("-c, --config <config>", "tailwind config file name", __dirname + "/../tailwind.config.ts").option("-p, --postcss <postcss>", "postcss config file name", __dirname + "/../postcss.config.cjs").action(async ({ src, config: config2, postcss }) => {
+program.command("tailwind").description("techbook tailwind").option("-ts, --tailwind-src <tailwindSrc>", "tailwind src file name", __dirname + "/../src/" + cssSrcFileName).option("-tc, --tailwind-config <tailwindConfig>", "tailwind config file name", __dirname + "/../tailwind.config.ts").option("-tp, --tailwind-postcss <tailwindPostcss>", "postcss config file name", __dirname + "/../postcss.config.cjs").action(async ({ tailwindSrc, tailwindConfig, tailwindPostcss }) => {
   console.info("tailwind");
   await (await import('wait-on')).default({
     interval: 500,
@@ -732,7 +734,7 @@ program.command("tailwind").description("techbook tailwind").option("-s, --src <
       "./dist/lockfile"
     ]
   });
-  const result = (await import('cross-spawn')).default.sync("npx", ["--yes", "tailwindcss@latest", "-i", src, "-o", "./dist/global.css", "--watch", "--no-autoprefixer", "--postcss", postcss, "--config", config2], { stdio: "inherit" });
+  const result = (await import('cross-spawn')).default.sync("npx", ["--yes", "tailwindcss@latest", "-i", tailwindSrc, "-o", "./dist/global.css", "--watch", "--no-autoprefixer", "--postcss", tailwindPostcss, "--config", tailwindConfig], { stdio: "inherit" });
   console.info(result);
 });
 program.command("browser").description("techbook browser").option("-p, --port <port>", "browser sync port number", "3001").option("-pp, --proxy-port <proxyPort>", "browser proxy port number", "3000").action(async ({ port, proxyPort }) => {
