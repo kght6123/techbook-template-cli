@@ -12,7 +12,9 @@
     "index.js",
     "dist",
     "src/*.html",
-    "src/*.css"
+    "src/*.css",
+    "tailwind.config.ts",
+    "postcss.config.cjs"
   ],
   "scripts": {
     "dev": "unbuild --stub",
