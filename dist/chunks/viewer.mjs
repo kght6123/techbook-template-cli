@@ -1,5 +1,6 @@
 import express from 'express';
-import { I as cwd } from '../shared/techbook-template-cli.BkBk9nZO.mjs';
+import { I as cwd } from '../index.mjs';
+import 'commander';
 import '@akebifiky/remark-simple-plantuml';
 import '@shikijs/rehype';
 import '@shikijs/transformers';
@@ -14,6 +15,8 @@ import 'unified';
 import 'vfile-matter';
 import 'qrcode';
 import 'jiti';
+import 'path';
+import 'url';
 
 async function main({ port = 3e3 }) {
   const app = express();

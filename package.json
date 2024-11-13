@@ -10,7 +10,9 @@
   },
   "files": [
     "index.js",
-    "dist"
+    "dist",
+    "src/*.html",
+    "src/*.css"
   ],
   "scripts": {
     "dev": "unbuild --stub",

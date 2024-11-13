@@ -1,6 +1,6 @@
 import { Command } from "commander";
 
-import { config } from "./constants";
+import { config, __dirname } from "./constants";
 
 const CSS_FILE_MAP = {
   'JIS-B5': 'global.css',
@@ -60,9 +60,9 @@ program
 program
   .command("tailwind")
   .description("techbook tailwind")
-  .option("-s, --src <src>", "tailwind src file name", __dirname + "/src/" + cssSrcFileName)
-  .option("-c, --config <config>", "tailwind config file name", __dirname + "/tailwind.config.ts")
-  .option("-p, --postcss <postcss>", "postcss config file name", __dirname + "/postcss.config.cjs")
+  .option("-s, --src <src>", "tailwind src file name", __dirname + "/../src/" + cssSrcFileName)
+  .option("-c, --config <config>", "tailwind config file name", __dirname + "/../tailwind.config.ts")
+  .option("-p, --postcss <postcss>", "postcss config file name", __dirname + "/../postcss.config.cjs")
   .action(async ({ src, config, postcss }: { src: string, config: string, postcss: string }) => {
     console.info("tailwind");
     await (await import("wait-on")).default({

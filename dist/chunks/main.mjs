@@ -1,7 +1,8 @@
 import fs from 'fs';
 import Handlebars from 'handlebars';
-import { a as appendixTemplateHtmlPath, h as handlebarCompileOptions, b as appendixTitle, c as appendixDistPath, d as colophonTemplateHtmlPath, e as config, f as colophonDistPath, g as coverTemplateHtmlPath, i as frontCoverDistPath, j as backCoverDistPath, s as startCoverDistPath, k as endCoverDistPath, l as docsDir, m as distDir, p as processorRehype, n as githubSluggerExports, o as parseTitleForCodeMeta, q as isTitleForComment, r as parseTitleForComment, t as tocDistPath, u as introductionDistPath, v as finallyDistPath, w as profileDistPath, x as vivliostyleConfig, y as publicationJson, z as simpleIntroductionTemplateHtmlPath, A as introductionTemplateHtmlPath, B as introductionDocPath, C as processor, D as finallyDocPath, E as profileTemplateHtmlPath, F as simpleChapterTemplateHtmlPath, G as chapterTemplateHtmlPath, H as lockFileDistPath } from '../shared/techbook-template-cli.BkBk9nZO.mjs';
+import { a as appendixTemplateHtmlPath, h as handlebarCompileOptions, b as appendixTitle, c as appendixDistPath, d as colophonTemplateHtmlPath, e as config, f as colophonDistPath, g as coverTemplateHtmlPath, i as frontCoverDistPath, j as backCoverDistPath, s as startCoverDistPath, k as endCoverDistPath, l as docsDir, m as distDir, p as processorRehype, n as githubSluggerExports, o as parseTitleForCodeMeta, q as isTitleForComment, r as parseTitleForComment, t as tocDistPath, u as introductionDistPath, v as finallyDistPath, w as profileDistPath, x as vivliostyleConfig, y as publicationJson, z as simpleIntroductionTemplateHtmlPath, A as introductionTemplateHtmlPath, B as introductionDocPath, C as processor, D as finallyDocPath, E as profileTemplateHtmlPath, F as simpleChapterTemplateHtmlPath, G as chapterTemplateHtmlPath, H as lockFileDistPath } from '../index.mjs';
 import path from 'path';
+import 'commander';
 import '@akebifiky/remark-simple-plantuml';
 import '@shikijs/rehype';
 import '@shikijs/transformers';
@@ -16,6 +17,7 @@ import 'unified';
 import 'vfile-matter';
 import 'qrcode';
 import 'jiti';
+import 'url';
 
 const appendixMap = /* @__PURE__ */ new Map();
 const templateHtml$1 = Handlebars.compile(
