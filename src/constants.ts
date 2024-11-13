@@ -45,34 +45,34 @@ export const publicationJson = "./dist/publication.json";
 export const distDir = "./dist";
 export const docsDir = "./docs";
 
-export const lockFileSrcPath = "src/lockfile";
+export const lockFileSrcPath = __dirname + "src/lockfile";
 export const lockFileDistPath = distDir + "/lockfile";
 
-export const chapterTemplateHtmlPath = "src/chapter-template.html";
-export const simpleChapterTemplateHtmlPath = "src/simplechapter-template.html";
+export const chapterTemplateHtmlPath = __dirname + "src/chapter-template.html";
+export const simpleChapterTemplateHtmlPath = __dirname + "src/simplechapter-template.html";
 
 export const appendixTitle = "Appendix";
 export const appendixDistPath = distDir + "/appendix.dist.html";
-export const appendixTemplateHtmlPath = "src/appendix-template.html";
+export const appendixTemplateHtmlPath = __dirname + "src/appendix-template.html";
 
 export const colophonTitle = "奥付";
 export const colophonDistPath = distDir + "/colophon.dist.html";
-export const colophonTemplateHtmlPath = "src/colophon-template.html";
+export const colophonTemplateHtmlPath = __dirname + "src/colophon-template.html";
 
 export const profileTitle = "著者プロフィール";
 export const profileDistPath = distDir + "/profile.dist.html";
-export const profileTemplateHtmlPath = "src/profile-template.html";
+export const profileTemplateHtmlPath = __dirname + "src/profile-template.html";
 
 export const introductionDocPath = docsDir + "/_introduction.md";
 export const finallyDocPath = docsDir + "/_finally.md";
 export const introductionDistPath = distDir + "/_introduction.dist.html";
 export const finallyDistPath = distDir + "/_finally.dist.html";
-export const introductionTemplateHtmlPath = "src/introduction-template.html";
-export const simpleIntroductionTemplateHtmlPath = "src/simpleintroduction-template.html";
+export const introductionTemplateHtmlPath = __dirname + "src/introduction-template.html";
+export const simpleIntroductionTemplateHtmlPath = __dirname + "src/simpleintroduction-template.html";
 
 export const tocDistPath = distDir + "/toc.dist.html";
 
-export const coverTemplateHtmlPath = "src/cover-template.html";
+export const coverTemplateHtmlPath = __dirname + "src/cover-template.html";
 export const frontCoverDistPath = distDir + "/front-cover.dist.html";
 export const backCoverDistPath = distDir + "/back-cover.dist.html";
 export const startCoverDistPath = distDir + "/start-cover.dist.html";

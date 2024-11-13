@@ -1,5 +1,13 @@
 import { Command } from "commander";
 
+import { config } from "./constants";
+
+const CSS_FILE_MAP = {
+  'JIS-B5': 'global.css',
+  '105mm 173mm': 'global-105x173.css'
+};
+const cssSrcFileName = CSS_FILE_MAP[config.size] || 'global.css';
+
 const program = new Command();
 
 program
@@ -52,8 +60,10 @@ program
 program
   .command("tailwind")
   .description("techbook tailwind")
-  .option("-s, --src <src>", "tailwind src file name", "global.css")
-  .action(async ({ src }: { src: string }) => {
+  .option("-s, --src <src>", "tailwind src file name", __dirname + "/src/" + cssSrcFileName)
+  .option("-c, --config <config>", "tailwind config file name", __dirname + "/tailwind.config.ts")
+  .option("-p, --postcss <postcss>", "postcss config file name", __dirname + "/postcss.config.cjs")
+  .action(async ({ src, config, postcss }: { src: string, config: string, postcss: string }) => {
     console.info("tailwind");
     await (await import("wait-on")).default({
       interval: 500,
@@ -61,7 +71,7 @@ program
         "./dist/lockfile",
       ],
     });
-    const result = (await import("cross-spawn")).default.sync("npx", ["--yes", "tailwindcss@latest", "-i", `./src/${src}`, "-o", "./dist/global.css", "--watch", "--no-autoprefixer", "--postcss", "./postcss.config.cjs"], { stdio: "inherit" });
+    const result = (await import("cross-spawn")).default.sync("npx", ["--yes", "tailwindcss@latest", "-i", src, "-o", "./dist/global.css", "--watch", "--no-autoprefixer", "--postcss", postcss, "--config", config], { stdio: "inherit" });
     console.info(result);
   });
 
