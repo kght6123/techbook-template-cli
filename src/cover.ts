@@ -16,7 +16,7 @@ const templateHtml = Handlebars.compile(
   handlebarCompileOptions,
 );
 
-export const coverCompile = (isKDP: { isKDP: boolean }) => {
+export const coverCompile = ({ isKDP }: { isKDP: boolean }) => {
   const edition = config.editions[config.editions.length - 1];
   {
     const html = templateHtml({
