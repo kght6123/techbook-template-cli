@@ -56,9 +56,20 @@ techbook-template
 └── vivliostyle.config.cjs <-- VivlioStyleの設定ファイル（自動生成）
 ```
 
-## Build and Start
+## Install
 
 ```bash
+npm i github:kght6123/techbook-template-cli#v0.12-Release
+```
+
+## Development
+
+### Build and Start
+
+```bash
+git clone https://github.com/kght6123/techbook-template-cli.git
+cd techbook-template-cli
+npm i
 npm run build
 npm run start -- dev
 npm run start -- build
@@ -67,7 +78,7 @@ npm run start -- tailwind
 npm run start -- browser
 ```
 
-
 ## ChangeLog
 
-- v0.10 11/14 プロジェクト作成
+- v0.10 2014/11/14 プロジェクト作成
+- v0.12 2015/3/9 tailwindコマンドの不具合を修正
