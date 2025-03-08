@@ -179,7 +179,7 @@ const templateHtml = Handlebars.compile(
   fs.readFileSync(coverTemplateHtmlPath).toString(),
   handlebarCompileOptions
 );
-const coverCompile = (isKDP) => {
+const coverCompile = ({ isKDP }) => {
   const edition = config.editions[config.editions.length - 1];
   {
     const html = templateHtml({

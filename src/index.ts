@@ -73,7 +73,7 @@ program
         "./dist/lockfile",
       ],
     });
-    const result = (await import("cross-spawn")).default.sync("npx", ["--yes", "tailwindcss@latest", "-i", tailwindSrc, "-o", "./dist/global.css", "--watch", "--no-autoprefixer", "--postcss", tailwindPostcss, "--config", tailwindConfig], { stdio: "inherit" });
+    const result = (await import("cross-spawn")).default.sync("npx", ["--package", "tailwindcss@latest", "--yes", "tailwindcss", "-i", tailwindSrc, "-o", "./dist/global.css", "--watch", "--no-autoprefixer", "--postcss", tailwindPostcss, "--config", tailwindConfig], { stdio: "inherit" });
     console.info(result);
   });
 

@@ -734,7 +734,7 @@ program.command("tailwind").description("techbook tailwind").option("-ts, --tail
       "./dist/lockfile"
     ]
   });
-  const result = (await import('cross-spawn')).default.sync("npx", ["--yes", "tailwindcss@latest", "-i", tailwindSrc, "-o", "./dist/global.css", "--watch", "--no-autoprefixer", "--postcss", tailwindPostcss, "--config", tailwindConfig], { stdio: "inherit" });
+  const result = (await import('cross-spawn')).default.sync("npx", ["--package", "tailwindcss@latest", "--yes", "tailwindcss", "-i", tailwindSrc, "-o", "./dist/global.css", "--watch", "--no-autoprefixer", "--postcss", tailwindPostcss, "--config", tailwindConfig], { stdio: "inherit" });
   console.info(result);
 });
 program.command("browser").description("techbook browser").option("-p, --port <port>", "browser sync port number", "3001").option("-pp, --proxy-port <proxyPort>", "browser proxy port number", "3000").action(async ({ port, proxyPort }) => {
