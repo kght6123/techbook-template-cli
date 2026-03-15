@@ -71,7 +71,7 @@
     content: element(topLeftCorner);
   }
   @top-right {
-    content: "第" counter(chapter) "章 " env(doc-title);
+    content: element(rightPageChapterHeader);
     width: 350px;
   }
   @top-left-corner {
@@ -692,6 +692,14 @@ a.leftPillarChapter::before {
 /* a.rightPillarChapterNo::after {
   content: target-counter(attr(href), chapter) "章 ";
 } */
+
+/* 右ページヘッダー用running element
+   VivlioStyleのバグ: target-counterの前方参照解決時に @page chapter:nth(1) が
+   余分に発火し counter(chapter) が誤った値になるため、
+   Handlebarsでビルド時に章番号を直接埋め込む方式で回避する */
+.rightPageChapterHeader {
+  position: running(rightPageChapterHeader);
+}
 
 /* テーブル */
 table {

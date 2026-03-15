@@ -63,6 +63,14 @@
     <div class="bottomRightCorner"></div>
     <div class="bottomLeft"></div>
     <div class="bottomLeftCorner"></div>
+    {{#each rightPillarChapterList}}
+    {{#switch this.html}}
+    {{#case ../distPath}}
+    <div class="rightPageChapterHeader"><span>第{{this.chapterCount}}章</span></div>
+    {{/case}}
+    {{#default}}{{/default}}
+    {{/switch}}
+    {{/each}}
     <div id="chaptercover" class="chapterCover flex flex-col items-end justify-center bg-primary-500 rounded  [page-break-before:always] w-[565px] h-[777px]">
       <div class="text-right pr-6">
         <a class="chapterCoverTitle border-t-0 border-l-0 border-r-0 border-b-[2px] border-solid border-white pb-1 px-2 text-white font-semibold no-underline" href="#{{slug}}">{{title}}</a>
