@@ -643,6 +643,198 @@ a.tableref::after {
 .balloon-stone-200 > .trianle-right {
   border-right: 1rem solid theme("colors.stone.200");
 }
+.balloon-slate-200 {
+  @apply balloon;
+  background-color: theme("colors.slate.200");
+  color: theme("colors.slate.800");
+  border-color: transparent;
+}
+.balloon-slate-200 > .trianle-left {
+  border-right: 1rem solid theme("colors.slate.200");
+}
+.balloon-slate-200 > .trianle-right {
+  border-right: 1rem solid theme("colors.slate.200");
+}
+.balloon-blue-200 {
+  @apply balloon;
+  background-color: theme("colors.blue.200");
+  color: theme("colors.blue.800");
+  border-color: transparent;
+}
+.balloon-blue-200 > .trianle-left {
+  border-right: 1rem solid theme("colors.blue.200");
+}
+.balloon-blue-200 > .trianle-right {
+  border-right: 1rem solid theme("colors.blue.200");
+}
+.balloon-sky-200 {
+  @apply balloon;
+  background-color: theme("colors.sky.200");
+  color: theme("colors.sky.800");
+  border-color: transparent;
+}
+.balloon-sky-200 > .trianle-left {
+  border-right: 1rem solid theme("colors.sky.200");
+}
+.balloon-sky-200 > .trianle-right {
+  border-right: 1rem solid theme("colors.sky.200");
+}
+.balloon-cyan-200 {
+  @apply balloon;
+  background-color: theme("colors.cyan.200");
+  color: theme("colors.cyan.800");
+  border-color: transparent;
+}
+.balloon-cyan-200 > .trianle-left {
+  border-right: 1rem solid theme("colors.cyan.200");
+}
+.balloon-cyan-200 > .trianle-right {
+  border-right: 1rem solid theme("colors.cyan.200");
+}
+.balloon-teal-200 {
+  @apply balloon;
+  background-color: theme("colors.teal.200");
+  color: theme("colors.teal.800");
+  border-color: transparent;
+}
+.balloon-teal-200 > .trianle-left {
+  border-right: 1rem solid theme("colors.teal.200");
+}
+.balloon-teal-200 > .trianle-right {
+  border-right: 1rem solid theme("colors.teal.200");
+}
+.balloon-emerald-200 {
+  @apply balloon;
+  background-color: theme("colors.emerald.200");
+  color: theme("colors.emerald.800");
+  border-color: transparent;
+}
+.balloon-emerald-200 > .trianle-left {
+  border-right: 1rem solid theme("colors.emerald.200");
+}
+.balloon-emerald-200 > .trianle-right {
+  border-right: 1rem solid theme("colors.emerald.200");
+}
+.balloon-green-200 {
+  @apply balloon;
+  background-color: theme("colors.green.200");
+  color: theme("colors.green.800");
+  border-color: transparent;
+}
+.balloon-green-200 > .trianle-left {
+  border-right: 1rem solid theme("colors.green.200");
+}
+.balloon-green-200 > .trianle-right {
+  border-right: 1rem solid theme("colors.green.200");
+}
+.balloon-lime-200 {
+  @apply balloon;
+  background-color: theme("colors.lime.200");
+  color: theme("colors.lime.800");
+  border-color: transparent;
+}
+.balloon-lime-200 > .trianle-left {
+  border-right: 1rem solid theme("colors.lime.200");
+}
+.balloon-lime-200 > .trianle-right {
+  border-right: 1rem solid theme("colors.lime.200");
+}
+.balloon-yellow-200 {
+  @apply balloon;
+  background-color: theme("colors.yellow.200");
+  color: theme("colors.yellow.800");
+  border-color: transparent;
+}
+.balloon-yellow-200 > .trianle-left {
+  border-right: 1rem solid theme("colors.yellow.200");
+}
+.balloon-yellow-200 > .trianle-right {
+  border-right: 1rem solid theme("colors.yellow.200");
+}
+.balloon-amber-200 {
+  @apply balloon;
+  background-color: theme("colors.amber.200");
+  color: theme("colors.amber.800");
+  border-color: transparent;
+}
+.balloon-amber-200 > .trianle-left {
+  border-right: 1rem solid theme("colors.amber.200");
+}
+.balloon-amber-200 > .trianle-right {
+  border-right: 1rem solid theme("colors.amber.200");
+}
+.balloon-orange-200 {
+  @apply balloon;
+  background-color: theme("colors.orange.200");
+  color: theme("colors.orange.800");
+  border-color: transparent;
+}
+.balloon-orange-200 > .trianle-left {
+  border-right: 1rem solid theme("colors.orange.200");
+}
+.balloon-orange-200 > .trianle-right {
+  border-right: 1rem solid theme("colors.orange.200");
+}
+.balloon-red-200 {
+  @apply balloon;
+  background-color: theme("colors.red.200");
+  color: theme("colors.red.800");
+  border-color: transparent;
+}
+.balloon-red-200 > .trianle-left {
+  border-right: 1rem solid theme("colors.red.200");
+}
+.balloon-red-200 > .trianle-right {
+  border-right: 1rem solid theme("colors.red.200");
+}
+.balloon-rose-200 {
+  @apply balloon;
+  background-color: theme("colors.rose.200");
+  color: theme("colors.rose.800");
+  border-color: transparent;
+}
+.balloon-rose-200 > .trianle-left {
+  border-right: 1rem solid theme("colors.rose.200");
+}
+.balloon-rose-200 > .trianle-right {
+  border-right: 1rem solid theme("colors.rose.200");
+}
+.balloon-pink-200 {
+  @apply balloon;
+  background-color: theme("colors.pink.200");
+  color: theme("colors.pink.800");
+  border-color: transparent;
+}
+.balloon-pink-200 > .trianle-left {
+  border-right: 1rem solid theme("colors.pink.200");
+}
+.balloon-pink-200 > .trianle-right {
+  border-right: 1rem solid theme("colors.pink.200");
+}
+.balloon-purple-200 {
+  @apply balloon;
+  background-color: theme("colors.purple.200");
+  color: theme("colors.purple.800");
+  border-color: transparent;
+}
+.balloon-purple-200 > .trianle-left {
+  border-right: 1rem solid theme("colors.purple.200");
+}
+.balloon-purple-200 > .trianle-right {
+  border-right: 1rem solid theme("colors.purple.200");
+}
+.balloon-violet-200 {
+  @apply balloon;
+  background-color: theme("colors.violet.200");
+  color: theme("colors.violet.800");
+  border-color: transparent;
+}
+.balloon-violet-200 > .trianle-left {
+  border-right: 1rem solid theme("colors.violet.200");
+}
+.balloon-violet-200 > .trianle-right {
+  border-right: 1rem solid theme("colors.violet.200");
+}
 .balloon-contents {
   @apply p-2;
 }
