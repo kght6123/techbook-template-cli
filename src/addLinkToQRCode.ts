@@ -54,7 +54,8 @@ async function generateQRCodeNode(url: string): Promise<Element | null> {
       type: "element",
       tagName: "figure",
       properties: {
-        style: "display: flex; align-items: center; justify-content: center;",
+        className: ["qrcode-figure"],
+        style: "display: flex; flex-direction: row; align-items: center; margin: 0.5rem 0; break-inside: avoid;",
       },
       children: [
         {
@@ -65,7 +66,7 @@ async function generateQRCodeNode(url: string): Promise<Element | null> {
             alt: `QR code for ${url}`,
             width: 70,
             height: 70,
-            style: "width: 70px; height: 70px;",
+            style: "width: 70px; height: 70px; flex-shrink: 0;",
           },
           children: [],
         },
@@ -73,7 +74,7 @@ async function generateQRCodeNode(url: string): Promise<Element | null> {
           type: "element",
           tagName: "figcaption",
           properties: {
-            style: "margin-left: 5px;", // Sets space between the image and text
+            style: "margin-left: 8px; word-break: break-all; overflow-wrap: anywhere; font-size: 0.7em;", // Sets space between the image and text
           },
           children: [
             {
