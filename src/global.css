@@ -589,6 +589,19 @@ a.tableref::after {
 .chat .qrcode {
   @apply w-36;
 }
+figure.qrcode-figure {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 0.5rem 0;
+  break-inside: avoid;
+}
+figure.qrcode-figure figcaption {
+  word-break: break-all;
+  overflow-wrap: anywhere;
+  font-size: 0.7em;
+  margin-left: 8px;
+}
 .balloon {
   @apply relative max-w-xl px-4 py-2 rounded-lg border-[1px] border-solid my-1;
   border-color: transparent;
