@@ -24,6 +24,7 @@ import { Node } from "unified/lib";
 import { matter } from "vfile-matter";
 import addLinkToQRCode from "./addLinkToQRCode";
 import codeBlockApplyTitlePlugin from "./codeBlockApplyTitlePlugin";
+import headingCustomIdPlugin from "./headingCustomIdPlugin";
 import imageApplyAttributesFromTitlePlugin from "./imageApplyAttributesFromTitlePlugin";
 import imageAttributesToTitlePlugin from "./imageAttributesToTitlePlugin";
 import mermaidApplyTitlePlugin from "./mermaidApplyTitlePlugin";
@@ -96,6 +97,7 @@ export const processorRehype = unified()
   // DOCS: https://github.com/akebifiky/remark-simple-plantuml
   .use(simplePlantUML)
   .use(imageAttributesToTitlePlugin)
+  .use(headingCustomIdPlugin)
   .use(remarkRehype, { allowDangerousHtml: true })
   .use(imageApplyAttributesFromTitlePlugin)
   .use(rehypeSlug)
