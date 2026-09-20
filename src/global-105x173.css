@@ -861,8 +861,23 @@ figure.qrcode-figure figcaption {
 }
 
 /* 画像埋め込み */
-.embedImage {
+/* className を指定しない画像には .embedImage が付かないため、
+   figure 側からも同じ基本スタイルを当てて原寸表示になるのを防ぐ */
+.embedImage,
+.embedImageFigure img {
   @apply block mx-auto my-0 max-w-full h-auto;
+}
+/* 本文に差し込むスクリーンショットなどは枠線をつける */
+.embedImageFigure img {
+  @apply border border-solid;
+}
+/* QRコードは小さく、枠線なしで表示する */
+.embedImageFigure img.qrcode {
+  @apply w-24 h-24 border-0;
+}
+/* 1ページ全体を使う画像 */
+.embedImageFigure img.onepage {
+  @apply w-auto h-[44rem] border-0;
 }
 .embedImageCaption {
   @apply text-center text-sm font-bold ci-[caption];
