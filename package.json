@@ -39,7 +39,7 @@
     "@mermaid-js/mermaid-cli": "^10.9.1",
     "@shikijs/rehype": "^1.1.7",
     "@shikijs/transformers": "^1.1.7",
-    "@vivliostyle/cli": "^8.16.0",
+    "@vivliostyle/cli": "^11.3.3",
     "browser-sync": "^3.0.3",
     "chokidar": "^4.0.1",
     "commander": "^12.1.0",
@@ -86,7 +86,10 @@
     "@types/qrcode": "^1.5.5",
     "@types/wait-on": "^5.3.4"
   },
+  "engines": {
+    "node": "^20.19.0 || >=22.12.0"
+  },
   "volta": {
-    "node": "20.11.1"
+    "node": "22.22.2"
   }
 }
