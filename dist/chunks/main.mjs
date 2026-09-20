@@ -1,6 +1,6 @@
 import fs from 'fs';
 import Handlebars from 'handlebars';
-import { a as appendixTemplateHtmlPath, h as handlebarCompileOptions, b as appendixTitle, c as appendixDistPath, d as colophonTemplateHtmlPath, e as config, f as colophonDistPath, g as coverTemplateHtmlPath, i as frontCoverDistPath, j as backCoverDistPath, s as startCoverDistPath, k as endCoverDistPath, l as docsDir, m as distDir, p as processorRehype, C as CUSTOM_ID_PATTERN, n as githubSluggerExports, o as parseTitleForCodeMeta, q as isTitleForComment, r as parseTitleForComment, t as tocDistPath, u as introductionDistPath, v as finallyDistPath, w as profileDistPath, x as vivliostyleConfig, y as publicationJson, z as simpleIntroductionTemplateHtmlPath, A as introductionTemplateHtmlPath, B as introductionDocPath, D as processor, E as finallyDocPath, F as profileTemplateHtmlPath, G as simpleChapterTemplateHtmlPath, H as chapterTemplateHtmlPath, I as lockFileDistPath } from '../index.mjs';
+import { a as appendixTemplateHtmlPath, h as handlebarCompileOptions, b as appendixTitle, c as appendixDistPath, d as colophonTemplateHtmlPath, e as config, f as colophonDistPath, g as coverTemplateHtmlPath, i as frontCoverDistPath, j as backCoverDistPath, s as startCoverDistPath, k as endCoverDistPath, l as docsDir, m as distDir, p as processorRehype, C as CUSTOM_ID_PATTERN, n as slug, o as parseTitleForCodeMeta, q as isTitleForComment, r as parseTitleForComment, t as tocDistPath, u as introductionDistPath, v as finallyDistPath, w as profileDistPath, x as vivliostyleConfig, y as publicationJson, z as simpleIntroductionTemplateHtmlPath, A as introductionTemplateHtmlPath, B as introductionDocPath, D as processor, E as finallyDocPath, F as profileTemplateHtmlPath, G as simpleChapterTemplateHtmlPath, H as chapterTemplateHtmlPath, I as lockFileDistPath } from '../index.mjs';
 import path from 'path';
 import 'commander';
 import '@akebifiky/remark-simple-plantuml';
@@ -247,22 +247,22 @@ const docsHeadingList = await Promise.all(
       const rawText = heading.children?.[0]?.value;
       const customId = rawText?.match(CUSTOM_ID_PATTERN);
       heading.text = customId ? rawText.replace(CUSTOM_ID_PATTERN, "") : rawText;
-      heading.id = customId ? customId[1] : githubSluggerExports.slug(heading.text, false);
+      heading.id = customId ? customId[1] : slug(heading.text, false);
       return heading;
     });
     const captions = root.children.map((node) => {
       if (node.type === "code" && node.meta) {
         const title = parseTitleForCodeMeta(node.meta);
-        return { title, id: githubSluggerExports.slug(title, false) };
+        return { title, id: slug(title, false) };
       }
       if (node.type === "html" && isTitleForComment(node.value)) {
         const title = parseTitleForComment(node.value);
-        return { title, id: githubSluggerExports.slug(title, false) };
+        return { title, id: slug(title, false) };
       }
       if (node.type === "paragraph" && node.children?.some((node2) => node2.type === "image")) {
         const image = node.children?.find((node2) => node2.type === "image");
         const alt = image?.alt?.split(",")?.[0];
-        return { title: alt, id: githubSluggerExports.slug(alt, false) };
+        return { title: alt, id: slug(alt, false) };
       }
       return void 0;
     }).filter((caption) => caption?.title);
