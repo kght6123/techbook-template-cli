@@ -45,7 +45,7 @@ program
       console.info("build", tailwindSrc, tailwindConfig, tailwindPostcss);
       const main = (await import("./main")).default;
       await main();
-      (await import("cross-spawn")).default.sync("npx", ["--yes", "tailwindcss@latest", "-i", tailwindSrc, "-o", "./dist/global.css", "--no-autoprefixer", "--postcss", tailwindPostcss, "--config", tailwindConfig], { stdio: "inherit" });
+      (await import("cross-spawn")).default.sync("npx", ["--yes", "tailwindcss@3.4.19", "-i", tailwindSrc, "-o", "./dist/global.css", "--no-autoprefixer", "--postcss", tailwindPostcss, "--config", tailwindConfig], { stdio: "inherit" });
       (await import("cross-spawn")).default.sync("npx", ["--yes", "@vivliostyle/cli", "build", "--style", "./dist/global.css"], { stdio: "inherit" });
     },
   );
@@ -73,7 +73,7 @@ program
         "./dist/lockfile",
       ],
     });
-    const result = (await import("cross-spawn")).default.sync("npx", ["--package", "tailwindcss@latest", "--yes", "tailwindcss", "-i", tailwindSrc, "-o", "./dist/global.css", "--watch", "--no-autoprefixer", "--postcss", tailwindPostcss, "--config", tailwindConfig], { stdio: "inherit" });
+    const result = (await import("cross-spawn")).default.sync("npx", ["--package", "tailwindcss@3.4.19", "--yes", "tailwindcss", "-i", tailwindSrc, "-o", "./dist/global.css", "--watch", "--no-autoprefixer", "--postcss", tailwindPostcss, "--config", tailwindConfig], { stdio: "inherit" });
     console.info(result);
   });
 
