@@ -150,8 +150,11 @@ export const tocCompile = () => {
           .map(({ html, headings }) => {
             return headings
               .map((heading) => {
-                const text = (heading.children?.[0] as Text)?.value;
-                const id = slug(text, false);
+                // docsHeadingList で `{#id}` を解決済みの text / id をそのまま使う
+                const { text, id } = heading as Heading & {
+                  id: string;
+                  text: string;
+                };
                 return `<li>
             <a
               href="${html}#${id}"

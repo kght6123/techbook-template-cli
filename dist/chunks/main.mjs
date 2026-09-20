@@ -312,8 +312,7 @@ const tocCompile = () => {
         </li>
         ${docsHeadingList.map(({ html: html2, headings }) => {
     return headings.map((heading) => {
-      const text = heading.children?.[0]?.value;
-      const id = githubSluggerExports.slug(text, false);
+      const { text, id } = heading;
       return `<li>
             <a
               href="${html2}#${id}"
