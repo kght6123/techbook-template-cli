@@ -41,12 +41,14 @@ program
   .option("-ts, --tailwind-src <tailwindSrc>", "tailwind src file name", __dirname + "/../src/" + cssSrcFileName)
   .option("-tc, --tailwind-config <tailwindConfig>", "tailwind config file name", __dirname + "/../tailwind.config.ts")
   .option("-tp, --tailwind-postcss <tailwindPostcss>", "postcss config file name", __dirname + "/../postcss.config.cjs")
-  .action(async ({ tailwindSrc, tailwindConfig, tailwindPostcss }: { tailwindSrc: string, tailwindConfig: string, tailwindPostcss: string }) => {
-      console.info("build", tailwindSrc, tailwindConfig, tailwindPostcss);
+  // ページ数が多いとVivlioStyleの既定の120秒では組版が終わらないため、既定値を延ばしている。
+  .option("-vt, --vivliostyle-timeout <vivliostyleTimeout>", "vivliostyle build timeout (seconds)", "600")
+  .action(async ({ tailwindSrc, tailwindConfig, tailwindPostcss, vivliostyleTimeout }: { tailwindSrc: string, tailwindConfig: string, tailwindPostcss: string, vivliostyleTimeout: string }) => {
+      console.info("build", tailwindSrc, tailwindConfig, tailwindPostcss, vivliostyleTimeout);
       const main = (await import("./main")).default;
       await main();
       (await import("cross-spawn")).default.sync("npx", ["--yes", "tailwindcss@3.4.19", "-i", tailwindSrc, "-o", "./dist/global.css", "--no-autoprefixer", "--postcss", tailwindPostcss, "--config", tailwindConfig], { stdio: "inherit" });
-      (await import("cross-spawn")).default.sync("npx", ["--yes", "@vivliostyle/cli", "build", "--style", "./dist/global.css"], { stdio: "inherit" });
+      (await import("cross-spawn")).default.sync("npx", ["--yes", "@vivliostyle/cli", "build", "--style", "./dist/global.css", "--timeout", vivliostyleTimeout], { stdio: "inherit" });
     },
   );
 

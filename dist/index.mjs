@@ -732,13 +732,13 @@ program.command("dev").description("techbook dev").option("-ph, --h3-port <port>
     });
   }
 );
-program.command("build").description("techbook build").option("-kdp, --kindle-direct-print", "kindle direct print mode", "false").option("-ts, --tailwind-src <tailwindSrc>", "tailwind src file name", __dirname + "/../src/" + cssSrcFileName).option("-tc, --tailwind-config <tailwindConfig>", "tailwind config file name", __dirname + "/../tailwind.config.ts").option("-tp, --tailwind-postcss <tailwindPostcss>", "postcss config file name", __dirname + "/../postcss.config.cjs").action(
-  async ({ tailwindSrc, tailwindConfig, tailwindPostcss }) => {
-    console.info("build", tailwindSrc, tailwindConfig, tailwindPostcss);
+program.command("build").description("techbook build").option("-kdp, --kindle-direct-print", "kindle direct print mode", "false").option("-ts, --tailwind-src <tailwindSrc>", "tailwind src file name", __dirname + "/../src/" + cssSrcFileName).option("-tc, --tailwind-config <tailwindConfig>", "tailwind config file name", __dirname + "/../tailwind.config.ts").option("-tp, --tailwind-postcss <tailwindPostcss>", "postcss config file name", __dirname + "/../postcss.config.cjs").option("-vt, --vivliostyle-timeout <vivliostyleTimeout>", "vivliostyle build timeout (seconds)", "600").action(
+  async ({ tailwindSrc, tailwindConfig, tailwindPostcss, vivliostyleTimeout }) => {
+    console.info("build", tailwindSrc, tailwindConfig, tailwindPostcss, vivliostyleTimeout);
     const main = (await import('./chunks/main.mjs')).default;
     await main();
     (await import('cross-spawn')).default.sync("npx", ["--yes", "tailwindcss@3.4.19", "-i", tailwindSrc, "-o", "./dist/global.css", "--no-autoprefixer", "--postcss", tailwindPostcss, "--config", tailwindConfig], { stdio: "inherit" });
-    (await import('cross-spawn')).default.sync("npx", ["--yes", "@vivliostyle/cli", "build", "--style", "./dist/global.css"], { stdio: "inherit" });
+    (await import('cross-spawn')).default.sync("npx", ["--yes", "@vivliostyle/cli", "build", "--style", "./dist/global.css", "--timeout", vivliostyleTimeout], { stdio: "inherit" });
   }
 );
 program.command("viewer").description("techbook viewer").option("-p, --port <port>", "express server port number", "3000").action(async ({ port }) => {
