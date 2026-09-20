@@ -5,6 +5,7 @@ import { Heading, Text } from "mdast";
 import { distDir, docsDir, processorRehype, tocDistPath, config } from "./constants";
 
 import { slug } from "github-slugger";
+import { CUSTOM_ID_PATTERN } from "./headingCustomIdPlugin";
 import {
   isTitleForComment,
   parseTitleForCodeMeta,
@@ -40,8 +41,14 @@ export const docsHeadingList = await Promise.all(
         )
         .map((node) => {
           const heading = node as Heading & { id: string; text: string };
-          heading.text = (heading.children?.[0] as Text)?.value;
-          heading.id = slug(heading.text, false);
+          const rawText = (heading.children?.[0] as Text)?.value;
+          // ここではparseしか実行しないためheadingCustomIdPluginが効かない。
+          // 同じ規則で末尾の`{#id}`を明示的なIDとして扱う。
+          const customId = rawText?.match(CUSTOM_ID_PATTERN);
+          heading.text = customId
+            ? rawText.replace(CUSTOM_ID_PATTERN, "")
+            : rawText;
+          heading.id = customId ? customId[1] : slug(heading.text, false);
           return heading;
         });
 
@@ -143,8 +150,11 @@ export const tocCompile = () => {
           .map(({ html, headings }) => {
             return headings
               .map((heading) => {
-                const text = (heading.children?.[0] as Text)?.value;
-                const id = slug(text, false);
+                // docsHeadingList で `{#id}` を解決済みの text / id をそのまま使う
+                const { text, id } = heading as Heading & {
+                  id: string;
+                  text: string;
+                };
                 return `<li>
             <a
               href="${html}#${id}"

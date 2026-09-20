@@ -493,6 +493,24 @@ const codeBlockApplyTitlePlugin = () => {
   };
 };
 
+const CUSTOM_ID_PATTERN = /\s*\{#([^}\s]+)\}\s*$/;
+const headingCustomIdPlugin = () => {
+  return (tree) => {
+    visit(tree, "heading", (node) => {
+      const lastChild = node.children?.[node.children.length - 1];
+      if (lastChild?.type !== "text") return;
+      const textNode = lastChild;
+      const matched = textNode.value.match(CUSTOM_ID_PATTERN);
+      if (!matched) return;
+      textNode.value = textNode.value.replace(CUSTOM_ID_PATTERN, "");
+      node.data = {
+        ...node.data,
+        hProperties: { ...node.data?.hProperties, id: matched[1] }
+      };
+    });
+  };
+};
+
 const imageApplyAttributesFromTitlePlugin = () => {
   return (tree) => {
     visit(tree, "element", (node, index, parent) => {
@@ -671,7 +689,7 @@ const startCoverDistPath = distDir + "/start-cover.dist.html";
 const endCoverDistPath = distDir + "/end-cover.dist.html";
 const processorRehype = unified().use(remarkParse).use(remarkFrontmatter, { type: "yaml", marker: "-" }).use(() => (_tree, file) => {
   matter(file, { strip: true });
-}).use(remarkGfm).use(simplePlantUML).use(imageAttributesToTitlePlugin).use(remarkRehype, { allowDangerousHtml: true }).use(imageApplyAttributesFromTitlePlugin).use(rehypeSlug).use(rehypeMermaid, {
+}).use(remarkGfm).use(simplePlantUML).use(imageAttributesToTitlePlugin).use(headingCustomIdPlugin).use(remarkRehype, { allowDangerousHtml: true }).use(imageApplyAttributesFromTitlePlugin).use(rehypeSlug).use(rehypeMermaid, {
   strategy: "img-png"
   // strategy: 'pre-mermaid'
 }).use(codeBlockApplyTitlePlugin).use(mermaidApplyTitlePlugin).use(tableApplyTitlePlugin).use(rehypeShiki, {
@@ -782,4 +800,4 @@ program.command("browser").description("techbook browser").option("-p, --port <p
 });
 program.parse();
 
-export { introductionTemplateHtmlPath as A, introductionDocPath as B, processor as C, finallyDocPath as D, profileTemplateHtmlPath as E, simpleChapterTemplateHtmlPath as F, chapterTemplateHtmlPath as G, lockFileDistPath as H, cwd as I, appendixTemplateHtmlPath as a, appendixTitle as b, appendixDistPath as c, colophonTemplateHtmlPath as d, config as e, colophonDistPath as f, coverTemplateHtmlPath as g, handlebarCompileOptions as h, frontCoverDistPath as i, backCoverDistPath as j, endCoverDistPath as k, docsDir as l, distDir as m, githubSluggerExports as n, parseTitleForCodeMeta as o, processorRehype as p, isTitleForComment as q, parseTitleForComment as r, startCoverDistPath as s, tocDistPath as t, introductionDistPath as u, finallyDistPath as v, profileDistPath as w, vivliostyleConfig as x, publicationJson as y, simpleIntroductionTemplateHtmlPath as z };
+export { introductionTemplateHtmlPath as A, introductionDocPath as B, CUSTOM_ID_PATTERN as C, processor as D, finallyDocPath as E, profileTemplateHtmlPath as F, simpleChapterTemplateHtmlPath as G, chapterTemplateHtmlPath as H, lockFileDistPath as I, cwd as J, appendixTemplateHtmlPath as a, appendixTitle as b, appendixDistPath as c, colophonTemplateHtmlPath as d, config as e, colophonDistPath as f, coverTemplateHtmlPath as g, handlebarCompileOptions as h, frontCoverDistPath as i, backCoverDistPath as j, endCoverDistPath as k, docsDir as l, distDir as m, githubSluggerExports as n, parseTitleForCodeMeta as o, processorRehype as p, isTitleForComment as q, parseTitleForComment as r, startCoverDistPath as s, tocDistPath as t, introductionDistPath as u, finallyDistPath as v, profileDistPath as w, vivliostyleConfig as x, publicationJson as y, simpleIntroductionTemplateHtmlPath as z };

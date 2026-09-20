@@ -1,5 +1,5 @@
 import express from 'express';
-import { I as cwd } from '../index.mjs';
+import { J as cwd } from '../index.mjs';
 import 'commander';
 import '@akebifiky/remark-simple-plantuml';
 import '@shikijs/rehype';

@@ -1,6 +1,6 @@
 import fs from 'fs';
 import Handlebars from 'handlebars';
-import { a as appendixTemplateHtmlPath, h as handlebarCompileOptions, b as appendixTitle, c as appendixDistPath, d as colophonTemplateHtmlPath, e as config, f as colophonDistPath, g as coverTemplateHtmlPath, i as frontCoverDistPath, j as backCoverDistPath, s as startCoverDistPath, k as endCoverDistPath, l as docsDir, m as distDir, p as processorRehype, n as githubSluggerExports, o as parseTitleForCodeMeta, q as isTitleForComment, r as parseTitleForComment, t as tocDistPath, u as introductionDistPath, v as finallyDistPath, w as profileDistPath, x as vivliostyleConfig, y as publicationJson, z as simpleIntroductionTemplateHtmlPath, A as introductionTemplateHtmlPath, B as introductionDocPath, C as processor, D as finallyDocPath, E as profileTemplateHtmlPath, F as simpleChapterTemplateHtmlPath, G as chapterTemplateHtmlPath, H as lockFileDistPath } from '../index.mjs';
+import { a as appendixTemplateHtmlPath, h as handlebarCompileOptions, b as appendixTitle, c as appendixDistPath, d as colophonTemplateHtmlPath, e as config, f as colophonDistPath, g as coverTemplateHtmlPath, i as frontCoverDistPath, j as backCoverDistPath, s as startCoverDistPath, k as endCoverDistPath, l as docsDir, m as distDir, p as processorRehype, C as CUSTOM_ID_PATTERN, n as githubSluggerExports, o as parseTitleForCodeMeta, q as isTitleForComment, r as parseTitleForComment, t as tocDistPath, u as introductionDistPath, v as finallyDistPath, w as profileDistPath, x as vivliostyleConfig, y as publicationJson, z as simpleIntroductionTemplateHtmlPath, A as introductionTemplateHtmlPath, B as introductionDocPath, D as processor, E as finallyDocPath, F as profileTemplateHtmlPath, G as simpleChapterTemplateHtmlPath, H as chapterTemplateHtmlPath, I as lockFileDistPath } from '../index.mjs';
 import path from 'path';
 import 'commander';
 import '@akebifiky/remark-simple-plantuml';
@@ -244,8 +244,10 @@ const docsHeadingList = await Promise.all(
       !(node.depth === 2 && node.position?.start.line <= 2)
     ).map((node) => {
       const heading = node;
-      heading.text = heading.children?.[0]?.value;
-      heading.id = githubSluggerExports.slug(heading.text, false);
+      const rawText = heading.children?.[0]?.value;
+      const customId = rawText?.match(CUSTOM_ID_PATTERN);
+      heading.text = customId ? rawText.replace(CUSTOM_ID_PATTERN, "") : rawText;
+      heading.id = customId ? customId[1] : githubSluggerExports.slug(heading.text, false);
       return heading;
     });
     const captions = root.children.map((node) => {
@@ -310,8 +312,7 @@ const tocCompile = () => {
         </li>
         ${docsHeadingList.map(({ html: html2, headings }) => {
     return headings.map((heading) => {
-      const text = heading.children?.[0]?.value;
-      const id = githubSluggerExports.slug(text, false);
+      const { text, id } = heading;
       return `<li>
             <a
               href="${html2}#${id}"
