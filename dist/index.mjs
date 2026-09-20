@@ -298,7 +298,8 @@ async function generateQRCodeNode(url) {
       type: "element",
       tagName: "figure",
       properties: {
-        style: "display: flex; align-items: center; justify-content: center;"
+        className: ["qrcode-figure"],
+        style: "display: flex; flex-direction: row; align-items: center; margin: 0.5rem 0; break-inside: avoid;"
       },
       children: [
         {
@@ -309,7 +310,7 @@ async function generateQRCodeNode(url) {
             alt: `QR code for ${url}`,
             width: 70,
             height: 70,
-            style: "width: 70px; height: 70px;"
+            style: "width: 70px; height: 70px; flex-shrink: 0;"
           },
           children: []
         },
@@ -317,7 +318,7 @@ async function generateQRCodeNode(url) {
           type: "element",
           tagName: "figcaption",
           properties: {
-            style: "margin-left: 5px;"
+            style: "margin-left: 8px; word-break: break-all; overflow-wrap: anywhere; font-size: 0.7em;"
             // Sets space between the image and text
           },
           children: [
@@ -718,7 +719,7 @@ program.command("build").description("techbook build").option("-kdp, --kindle-di
     console.info("build", tailwindSrc, tailwindConfig, tailwindPostcss);
     const main = (await import('./chunks/main.mjs')).default;
     await main();
-    (await import('cross-spawn')).default.sync("npx", ["--yes", "tailwindcss@latest", "-i", tailwindSrc, "-o", "./dist/global.css", "--no-autoprefixer", "--postcss", tailwindPostcss, "--config", tailwindConfig], { stdio: "inherit" });
+    (await import('cross-spawn')).default.sync("npx", ["--yes", "tailwindcss@3.4.19", "-i", tailwindSrc, "-o", "./dist/global.css", "--no-autoprefixer", "--postcss", tailwindPostcss, "--config", tailwindConfig], { stdio: "inherit" });
     (await import('cross-spawn')).default.sync("npx", ["--yes", "@vivliostyle/cli", "build", "--style", "./dist/global.css"], { stdio: "inherit" });
   }
 );
@@ -734,7 +735,7 @@ program.command("tailwind").description("techbook tailwind").option("-ts, --tail
       "./dist/lockfile"
     ]
   });
-  const result = (await import('cross-spawn')).default.sync("npx", ["--package", "tailwindcss@latest", "--yes", "tailwindcss", "-i", tailwindSrc, "-o", "./dist/global.css", "--watch", "--no-autoprefixer", "--postcss", tailwindPostcss, "--config", tailwindConfig], { stdio: "inherit" });
+  const result = (await import('cross-spawn')).default.sync("npx", ["--package", "tailwindcss@3.4.19", "--yes", "tailwindcss", "-i", tailwindSrc, "-o", "./dist/global.css", "--watch", "--no-autoprefixer", "--postcss", tailwindPostcss, "--config", tailwindConfig], { stdio: "inherit" });
   console.info(result);
 });
 program.command("browser").description("techbook browser").option("-p, --port <port>", "browser sync port number", "3001").option("-pp, --proxy-port <proxyPort>", "browser proxy port number", "3000").action(async ({ port, proxyPort }) => {

@@ -35,7 +35,7 @@ program
             name: "h3",
           },
           {
-            command: `npx --yes wait-on --interval 500 ./dist/lockfile && npx  --yes tailwindcss@latest -i ./src/${cssSrcFileName} -o ./dist/global.css --watch --no-autoprefixer --postcss ./postcss.config.cjs`,
+            command: `npx --yes wait-on --interval 500 ./dist/lockfile && npx  --yes tailwindcss@3.4.19 -i ./src/${cssSrcFileName} -o ./dist/global.css --watch --no-autoprefixer --postcss ./postcss.config.cjs`,
             name: "tailwind",
           },
           {
@@ -65,7 +65,7 @@ program
           name: "main",
         },
         {
-          command: `npx --yes tailwindcss@latest -i ./src/${cssSrcFileName} -o ./dist/global.css --no-autoprefixer --postcss ./postcss.config.cjs`,
+          command: `npx --yes tailwindcss@3.4.19 -i ./src/${cssSrcFileName} -o ./dist/global.css --no-autoprefixer --postcss ./postcss.config.cjs`,
           name: "tailwind",
         },
         {
@@ -94,7 +94,7 @@ program
           name: "main",
         },
         {
-          command: `npx --yes tailwindcss@latest -i ./src/${cssSrcFileName} -o ./dist/global.css --no-autoprefixer --postcss ./postcss.config.cjs`,
+          command: `npx --yes tailwindcss@3.4.19 -i ./src/${cssSrcFileName} -o ./dist/global.css --no-autoprefixer --postcss ./postcss.config.cjs`,
           name: "tailwind",
         },
         {
