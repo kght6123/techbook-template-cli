@@ -2,7 +2,7 @@ import type { Element, ElementContent, Root } from 'hast'
 import { toText } from 'hast-util-to-text'
 import { parse } from 'space-separated-tokens'
 import type { Plugin } from 'unified'
-import visitParents from 'unist-util-visit-parents'
+import { visitParents } from 'unist-util-visit-parents'
 import type { VFile } from 'vfile'
 import { ParseMDDOptions, renderMermaid } from "@mermaid-js/mermaid-cli"
 import puppeteer, { PuppeteerLaunchOptions, Browser } from "puppeteer";
@@ -41,7 +41,7 @@ export interface RenderResult {
   title?: string
 }
 
-let browser: Browser = undefined
+let browser: Browser | undefined = undefined
 
 /**
  * A regular expression to test for non-whitespace characters.
@@ -114,7 +114,7 @@ function isMermaidElement(element: Element, strategy: Strategy): boolean {
  * @returns
  *   The data URI.
  */
-function toDataURI(result: RenderResult): string {
+function toDataURI(result: RenderResult): string | undefined {
   if (result.screenshot) {
     return `data:image/png;base64,${result.screenshot.toString('base64')}`
   }
@@ -253,8 +253,8 @@ const rehypeMermaid: Plugin<[RehypeMermaidOptions?], Root> = (options) => {
           return {
             id,
             screenshot: data,
-            title,
-            description: desc,
+            title: title ?? undefined,
+            description: desc ?? undefined,
           }
         } catch (error) {
           throw error instanceof Error

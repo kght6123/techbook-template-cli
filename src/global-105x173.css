@@ -206,10 +206,16 @@ ul.contains-task-list > li.task-list-item::before {
   counter-reset: shiki_line_number;
   counter-increment: shiki_line_number 0;
 }
-.shiki > code .line:not(:last-child)::before {
+.shiki > code .line::before {
   @apply w-8 mr-6 inline-block text-right text-gray-600 text-xs;
   content: counter(shiki_line_number);
   counter-increment: shiki_line_number;
+}
+/* shiki 1.1.x は末尾に空の .line を出す。新しい shiki は出さない。
+   どちらでも行番号がずれないよう、空の行だけを取り除く
+   （:not(:last-child) で除くと、新しい shiki では最後の行から番号が消える）。 */
+.shiki > code .line:last-child:empty {
+  display: none;
 }
 .shiki > code .line.diff.add {
   @apply bg-[rgba(117,249,117,0.4)];

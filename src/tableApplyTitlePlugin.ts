@@ -1,20 +1,16 @@
 import { slug } from "github-slugger";
-import { Element, Text } from "hast";
+import { Element } from "hast";
 import { Plugin } from "unified";
 import { Node, Parent } from "unist";
-import visit from "unist-util-visit";
+import { visit } from "unist-util-visit";
 import { isTitleForComment, parseTitleForComment } from "./utility";
 
 const tableApplyTitlePlugin: Plugin = () => {
   return (tree: Node) => {
     visit(
-      tree,
+      tree as Parent,
       ["element", "raw"],
-      (
-        node: Element | Node,
-        index: number | null,
-        parent: Parent | undefined,
-      ) => {
+      (node, index, parent) => {
         if (
           // コメントのチェック
           node.type === "raw" &&
@@ -22,7 +18,7 @@ const tableApplyTitlePlugin: Plugin = () => {
           typeof node.value === "string" &&
           isTitleForComment(node.value) &&
           // 親のチェック
-          index !== null &&
+          index !== undefined &&
           parent &&
           parent.children.length > index + 2
         ) {

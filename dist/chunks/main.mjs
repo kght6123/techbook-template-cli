@@ -1,7 +1,8 @@
 import fs from 'fs';
 import Handlebars from 'handlebars';
-import { a as appendixTemplateHtmlPath, h as handlebarCompileOptions, b as appendixTitle, c as appendixDistPath, d as colophonTemplateHtmlPath, e as config, f as colophonDistPath, g as coverTemplateHtmlPath, i as frontCoverDistPath, j as backCoverDistPath, s as startCoverDistPath, k as endCoverDistPath, l as docsDir, m as distDir, p as processorRehype, C as CUSTOM_ID_PATTERN, n as slug, o as parseTitleForCodeMeta, q as isTitleForComment, r as parseTitleForComment, t as tocDistPath, u as introductionDistPath, v as finallyDistPath, w as profileDistPath, x as vivliostyleConfig, y as publicationJson, z as simpleIntroductionTemplateHtmlPath, A as introductionTemplateHtmlPath, B as introductionDocPath, D as processor, E as finallyDocPath, F as profileTemplateHtmlPath, G as simpleChapterTemplateHtmlPath, H as chapterTemplateHtmlPath, I as lockFileDistPath } from '../index.mjs';
+import { a as appendixTemplateHtmlPath, h as handlebarCompileOptions, b as appendixTitle, c as appendixDistPath, d as colophonTemplateHtmlPath, e as config, f as colophonDistPath, g as coverTemplateHtmlPath, i as frontCoverDistPath, j as backCoverDistPath, s as startCoverDistPath, k as endCoverDistPath, l as docsDir, m as distDir, p as processorRehype, C as CUSTOM_ID_PATTERN, n as parseTitleForCodeMeta, o as isTitleForComment, q as parseTitleForComment, t as tocDistPath, r as introductionDistPath, u as finallyDistPath, v as profileDistPath, w as vivliostyleConfig, x as publicationJson, y as simpleIntroductionTemplateHtmlPath, z as introductionTemplateHtmlPath, A as introductionDocPath, B as processor, D as finallyDocPath, E as profileTemplateHtmlPath, F as simpleChapterTemplateHtmlPath, G as chapterTemplateHtmlPath, H as lockFileDistPath } from '../index.mjs';
 import path from 'path';
+import { slug } from 'github-slugger';
 import 'commander';
 import '@akebifiky/remark-simple-plantuml';
 import '@shikijs/rehype';
@@ -16,6 +17,7 @@ import 'remark-rehype';
 import 'unified';
 import 'vfile-matter';
 import 'qrcode';
+import 'unist-util-visit';
 import 'jiti';
 import 'url';
 
@@ -241,7 +243,7 @@ const docsHeadingList = await Promise.all(
     const root = processorRehype.parse(input);
     const headings = root.children.filter(
       (node) => node.type === "heading" && // frontmatterをh2として扱わない
-      !(node.depth === 2 && node.position?.start.line <= 2)
+      !(node.depth === 2 && (node.position?.start.line ?? 0) <= 2)
     ).map((node) => {
       const heading = node;
       const rawText = heading.children?.[0]?.value;
@@ -253,19 +255,22 @@ const docsHeadingList = await Promise.all(
     const captions = root.children.map((node) => {
       if (node.type === "code" && node.meta) {
         const title = parseTitleForCodeMeta(node.meta);
+        if (!title) return void 0;
         return { title, id: slug(title, false) };
       }
       if (node.type === "html" && isTitleForComment(node.value)) {
         const title = parseTitleForComment(node.value);
+        if (!title) return void 0;
         return { title, id: slug(title, false) };
       }
       if (node.type === "paragraph" && node.children?.some((node2) => node2.type === "image")) {
         const image = node.children?.find((node2) => node2.type === "image");
         const alt = image?.alt?.split(",")?.[0];
+        if (!alt) return void 0;
         return { title: alt, id: slug(alt, false) };
       }
       return void 0;
-    }).filter((caption) => caption?.title);
+    }).filter((caption) => caption !== void 0);
     return { src, html, headings, dist, fileName, captions };
   })
 );
@@ -367,6 +372,10 @@ const docrefRegisterHelper = () => {
     }
     const { html, headings } = toc;
     const heading = headings.find((heading2) => heading2.depth === 1);
+    if (heading === void 0) {
+      console.error(`chapref: ${filePathPrefix} \u306B\u898B\u51FA\u3057\u304C\u3042\u308A\u307E\u305B\u3093\u3067\u3057\u305F\u3002`);
+      return "";
+    }
     return new Handlebars.SafeString(`
 <a class="chapref" href="${html}#${heading.id}">${heading.text}</a>
 `);
@@ -389,7 +398,12 @@ const docrefRegisterHelper = () => {
       return "";
     }
     const { html, headings } = toc;
-    const { text: ctitle } = headings.find((heading2) => heading2.depth === 1);
+    const chapter = headings.find((heading2) => heading2.depth === 1);
+    if (chapter === void 0) {
+      console.error(`headref: ${filePathPrefix} \u306B\u898B\u51FA\u3057\u304C\u3042\u308A\u307E\u305B\u3093\u3067\u3057\u305F\u3002`);
+      return "";
+    }
+    const { text: ctitle } = chapter;
     const { id, text: htitle } = heading;
     return new Handlebars.SafeString(`
 <a class="h2ref" href="${html}#${id}">${ctitle}<a href="${html}#${id}" class="h2title">${htitle}</a></a>

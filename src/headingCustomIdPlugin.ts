@@ -1,6 +1,6 @@
 import { Plugin } from "unified";
 import { Node } from "unist";
-import visit from "unist-util-visit";
+import { visit } from "unist-util-visit";
 
 interface TextNode extends Node {
   type: "text";
@@ -27,7 +27,8 @@ export const CUSTOM_ID_PATTERN = /\s*\{#([^}\s]+)\}\s*$/;
  */
 const headingCustomIdPlugin: Plugin = () => {
   return (tree: Node) => {
-    visit<HeadingNode>(tree, "heading", (node) => {
+    visit(tree, "heading", (visited) => {
+      const node = visited as HeadingNode;
       const lastChild = node.children?.[node.children.length - 1];
       if (lastChild?.type !== "text") return;
 

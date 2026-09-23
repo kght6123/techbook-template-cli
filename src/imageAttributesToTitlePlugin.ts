@@ -1,6 +1,6 @@
 import { Plugin } from "unified";
 import { Node } from "unist";
-import visit from "unist-util-visit";
+import { visit } from "unist-util-visit";
 
 interface ImageNode extends Node {
   type: "image";
@@ -30,7 +30,8 @@ const extractAttributes = (
 
 const imageAttributesToTitlePlugin: Plugin = () => {
   return (tree: Node) => {
-    visit<ImageNode>(tree, "image", (node) => {
+    visit(tree, "image", (visited) => {
+      const node = visited as ImageNode;
       if (!node.alt) return;
       const [cleanAlt, attributes] = extractAttributes(node.alt);
       node.alt = cleanAlt;

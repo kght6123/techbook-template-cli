@@ -19,8 +19,8 @@ import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
 import { unified } from "unified";
 
-import { VFile } from "remark-rehype/lib";
-import { Node } from "unified/lib";
+import type { Node } from "unist";
+import type { VFile } from "vfile";
 import { matter } from "vfile-matter";
 import addLinkToQRCode from "./addLinkToQRCode";
 import codeBlockApplyTitlePlugin from "./codeBlockApplyTitlePlugin";
