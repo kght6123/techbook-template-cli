@@ -8,7 +8,7 @@
       <h3>著者プロフィール</h3>
       {{#each config.profiles}}
       <div class="author">
-        <img src="{{this.image}}" alt="{{this.name}}" />
+        {{#if this.image}}<img src="{{this.image}}" alt="{{this.name}}" />{{/if}}
         <div class="profile">
           <h5>{{this.position}}</h5>
           <h4>{{this.name}}</h4>
