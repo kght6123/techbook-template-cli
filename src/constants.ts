@@ -149,7 +149,7 @@ export interface MiraiBookConfig {
     position: string;
     name: string;
     description: string;
-    image: string;
+    image?: string;
   }[];
   cover: {
     front?: string;
