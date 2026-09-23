@@ -348,6 +348,18 @@ ul.contains-task-list > li.task-list-item::before {
     content: none;
   }
 }
+/* 目次の行は折り返さない。
+   target-counter(page) の桁数が変わると行の折り返しが変わり、
+   それが総ページ数を変え、また桁数が変わる……という振動を起こして
+   組版が収束しなくなる（ページ数が増えるとタイムアウトする）。
+   行を折り返さないことで、ページ番号の桁数と行数を切り離す。 */
+#toc a > div > div {
+  white-space: nowrap;
+}
+#toc a::after {
+  white-space: nowrap;
+  flex: 1 1 auto;
+}
 #toc .header1::before {
   content: "第" target-counter(attr(data-href), chapter) "章 ";
 }
