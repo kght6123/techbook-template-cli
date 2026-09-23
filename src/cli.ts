@@ -49,7 +49,7 @@ program
           prefixColors: "auto",
         },
       );
-      const closeEvents = await result;
+      await result;
       console.log("closed!!!");
     },
   );
@@ -79,7 +79,7 @@ program
         maxProcesses: 1,
       },
     );
-    const closeEvents = await result;
+    await result;
     console.log("closed!!!");
   });
 
@@ -108,7 +108,7 @@ program
         maxProcesses: 1,
       },
     );
-    const closeEvents = await result;
+    await result;
     console.log("closed!!!");
   });
 

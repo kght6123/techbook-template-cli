@@ -12,6 +12,10 @@ export const docrefRegisterHelper = () => {
     }
     const { html, headings } = toc;
     const heading = headings.find((heading) => heading.depth === 1);
+    if (heading === undefined) {
+      console.error(`chapref: ${filePathPrefix} に見出しがありませんでした。`);
+      return "";
+    }
     return new Handlebars.SafeString(`
 <a class="chapref" href="${html}#${heading.id}">${heading.text}</a>
 `);
@@ -35,7 +39,12 @@ export const docrefRegisterHelper = () => {
       return "";
     }
     const { html, headings } = toc;
-    const { text: ctitle } = headings.find((heading) => heading.depth === 1);
+    const chapter = headings.find((heading) => heading.depth === 1);
+    if (chapter === undefined) {
+      console.error(`headref: ${filePathPrefix} に見出しがありませんでした。`);
+      return "";
+    }
+    const { text: ctitle } = chapter;
     const { id, text: htitle } = heading;
     return new Handlebars.SafeString(`
 <a class="h2ref" href="${html}#${id}">${ctitle}<a href="${html}#${id}" class="h2title">${htitle}</a></a>

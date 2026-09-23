@@ -1,4 +1,3 @@
-import { Element } from "hast";
 
 export const parseTitleForCodeMeta = (meta: string) =>
   meta

@@ -1,7 +1,7 @@
-import { Element, Text } from "hast";
+import { Element } from "hast";
 import { Plugin } from "unified";
 import { Node, Parent } from "unist";
-import visit from "unist-util-visit";
+import { visit } from "unist-util-visit";
 
 import { slug } from "github-slugger";
 import {
@@ -13,13 +13,9 @@ import {
 const codeBlockApplyTitlePlugin: Plugin = () => {
   return (tree: Node) => {
     visit(
-      tree,
+      tree as Parent,
       ["element", "raw"],
-      (
-        node: Element | Node,
-        index: number | null,
-        parent: Parent | undefined,
-      ) => {
+      (node, index, parent) => {
         // コメントからタイトルを取得して、コードブロックに適用する
         if (
           // コメントのチェック
@@ -28,7 +24,7 @@ const codeBlockApplyTitlePlugin: Plugin = () => {
           typeof node.value === "string" &&
           isTitleForComment(node.value) &&
           // 親のチェック
-          index !== null &&
+          index !== undefined &&
           parent &&
           parent.children.length > index + 2
         ) {
@@ -59,34 +55,32 @@ const codeBlockApplyTitlePlugin: Plugin = () => {
           }
         }
         // コードブロックのmetaからタイトルを取得して、コードブロックに適用する
+        const pre = node.type === "element" ? (node as Element) : undefined;
+        const code = pre?.children[0];
         if (
           // pre タグのチェック
-          node.type === "element" &&
-          "tagName" in node &&
-          typeof node.tagName === "string" &&
-          node.tagName === "pre" &&
-          node.children.length > 0 &&
+          pre &&
+          pre.tagName === "pre" &&
           // code タグのチェック
-          node.children[0].type === "element" &&
-          "tagName" in node.children[0] &&
-          typeof node.children[0].tagName === "string" &&
-          node.children[0].tagName === "code" &&
+          code &&
+          code.type === "element" &&
+          code.tagName === "code" &&
           // code タグのdataのチェック
-          node.children[0].data &&
-          "meta" in node.children[0].data &&
-          typeof node.children[0].data.meta === "string" &&
+          code.data &&
+          "meta" in code.data &&
+          typeof code.data.meta === "string" &&
           // 親のチェック
-          index !== null &&
+          index !== undefined &&
           parent
         ) {
-          const titleText = parseTitleForCodeMeta(node.children[0].data.meta);
+          const titleText = parseTitleForCodeMeta(code.data.meta);
           if (titleText) {
             const titleElement: Element = {
               type: "element",
               tagName: "div",
               properties: { className: ["embedCode"] },
               children: [
-                node,
+                pre,
                 {
                   type: "element",
                   tagName: "div",

@@ -2,11 +2,11 @@ import { Element, Literal, Parent, Root } from "hast";
 import QRCode from "qrcode";
 import { Transformer } from "unified";
 import { Node } from "unist";
-import visit from "unist-util-visit";
+import { visit } from "unist-util-visit";
 
 const qrCodeCommentPrefix = "<!-- qrcode: ";
 
-const rehypeAddQRToComments: () => Transformer = () => {
+const rehypeAddQRToComments: () => Transformer<Root> = () => {
   return async (tree: Root) => {
     const promises: Promise<void>[] = [];
     const nodesToAdd: { index: number; parent: Parent; node: Element }[] = [];

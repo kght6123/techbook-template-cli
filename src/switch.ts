@@ -8,7 +8,7 @@ interface SwitchStack {
 
 const __switch_stack__: SwitchStack[] = [];
 
-Handlebars.registerHelper("switch", function (value, options) {
+Handlebars.registerHelper("switch", function (this: unknown, value, options) {
   __switch_stack__.push({
     switch_match: false,
     switch_value: value,
@@ -17,7 +17,7 @@ Handlebars.registerHelper("switch", function (value, options) {
   __switch_stack__.pop();
   return html;
 });
-Handlebars.registerHelper("case", function (...caseValues) {
+Handlebars.registerHelper("case", function (this: unknown, ...caseValues) {
   const options = caseValues.pop();
   const stack = __switch_stack__[__switch_stack__.length - 1];
   if (
@@ -48,7 +48,7 @@ Handlebars.registerHelper("case", function (...caseValues) {
   stack.switch_match = true;
   return options.fn(this);
 });
-Handlebars.registerHelper("default", function (options) {
+Handlebars.registerHelper("default", function (this: unknown, options) {
   const stack = __switch_stack__[__switch_stack__.length - 1];
   if (!stack.switch_match) {
     return options.fn(this);

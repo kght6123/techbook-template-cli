@@ -1,11 +1,11 @@
 import { slug } from "github-slugger";
-import { Element, Node } from "hast";
+import { Element, Node, Root } from "hast";
 import { Plugin } from "unified";
-import visit from "unist-util-visit";
+import { visit } from "unist-util-visit";
 
 const imageApplyAttributesFromTitlePlugin: Plugin = () => {
   return (tree: Node) => {
-    visit<Element>(tree, "element", (node, index, parent) => {
+    visit(tree as Root, "element", (node, index, parent) => {
       if (
         node.tagName === "img" &&
         node.properties?.title &&

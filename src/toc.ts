@@ -14,6 +14,12 @@ import {
 
 // 目次の作成にも対応する（HTMLとvivliostyle.config.js）、目次の順序はファイル名順にする。
 
+/** 図表やコードブロックの見出し。 */
+interface Caption {
+  title: string;
+  id: string;
+}
+
 // 目次を作るリストを作る
 export const docsHeadingList = await Promise.all(
   fs
@@ -37,7 +43,7 @@ export const docsHeadingList = await Promise.all(
           (node) =>
             node.type === "heading" &&
             // frontmatterをh2として扱わない
-            !(node.depth === 2 && node.position?.start.line <= 2),
+            !(node.depth === 2 && (node.position?.start.line ?? 0) <= 2),
         )
         .map((node) => {
           const heading = node as Heading & { id: string; text: string };
@@ -54,14 +60,16 @@ export const docsHeadingList = await Promise.all(
 
       // OK: Markdownノードからキャプションを取得するパターン
       const captions = root.children
-        .map((node) => {
+        .map((node): Caption | undefined => {
           if (node.type === "code" && node.meta) {
             const title = parseTitleForCodeMeta(node.meta);
+            if (!title) return undefined;
             return { title, id: slug(title, false) };
           }
           if (node.type === "html" && isTitleForComment(node.value)) {
             // TODO: Markdownノードからコメントを取得できる、他もRehypeではなくRemarkでコメントを処理するプラグインでもいいかも
             const title = parseTitleForComment(node.value);
+            if (!title) return undefined;
             return { title, id: slug(title, false) };
           }
           if (
@@ -70,11 +78,12 @@ export const docsHeadingList = await Promise.all(
           ) {
             const image = node.children?.find((node) => node.type === "image");
             const alt = image?.alt?.split(",")?.[0];
+            if (!alt) return undefined;
             return { title: alt, id: slug(alt, false) };
           }
           return undefined;
         })
-        .filter((caption) => caption?.title);
+        .filter((caption): caption is Caption => caption !== undefined);
 
       // NG: HTMLノードからキャプションを取得するパターン
       // const processedRoot = await processorRehype.run(root);

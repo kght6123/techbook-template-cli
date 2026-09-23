@@ -1,5 +1,5 @@
 import express from 'express';
-import { J as cwd } from '../index.mjs';
+import { I as cwd } from '../index.mjs';
 import 'commander';
 import '@akebifiky/remark-simple-plantuml';
 import '@shikijs/rehype';
@@ -14,6 +14,8 @@ import 'remark-rehype';
 import 'unified';
 import 'vfile-matter';
 import 'qrcode';
+import 'unist-util-visit';
+import 'github-slugger';
 import 'jiti';
 import 'path';
 import 'url';
