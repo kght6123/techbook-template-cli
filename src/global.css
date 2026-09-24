@@ -1,9 +1,3 @@
-@import "tailwindcss/base";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
-
-/* MEMO: Topに@importで書く必要がある https://tailwindcss.com/docs/using-with-preprocessors#build-time-imports */
-
 @page {
   size: jis-b5;
   /* margin: 10% !important; */
@@ -30,7 +24,6 @@
   /* 左ページの右余白を広げる */
   /* 上 | 右 | 下 | 左 */
   margin: 10% 8% 10% 12%;
-
   @top-left-corner {
     content: element(topLeftCorner);
   }
@@ -71,7 +64,6 @@
   /* 右ページの左余白を広げる */
   /* 上 | 右 | 下 | 左 */
   margin: 10% 12% 10% 8%;
-
   @top-right-corner {
     content: element(topLeftCorner);
   }
@@ -108,10 +100,13 @@
 }
 
 /* cover */
+
 .cover {
   page: cover;
-  page-break-before: always; /* Use if your last page is blank, else omit. */
+  page-break-before: always;
+  /* Use if your last page is blank, else omit. */
 }
+
 @page cover {
   background-image: var(--cover-url);
   background-size: cover;
@@ -147,17 +142,22 @@
     content: none;
   }
 }
+
 .coverText {
-  @apply h-[calc(257mm*0.8)];
+  height: calc(257mm * 0.8);
 }
 
 :root {
-  @apply font-["Rounded_Mgen+_2p","Rounded_Mplus_1c","PlemolJP"] [line-height:1.75] text-[10px];
+  font-family: "Rounded Mgen+ 2p","Rounded Mplus 1c","PlemolJP";
+  font-size: 10px;
+  line-height: 1.75;
 }
 
 /* リンク */
+
 a {
-  @apply whitespace-pre-wrap break-all;
+  white-space: pre-wrap;
+  word-break: break-all;
 }
 
 .writing-mode-vertical-rl {
@@ -165,161 +165,272 @@ a {
 }
 
 /* インラインコード */
+
 p > code {
-  @apply px-1 py-0.5 bg-primary-200 rounded mx-1;
+  margin-left: 0.25rem;
+  margin-right: 0.25rem;
+  border-radius: 0.25rem;
+  background-color: var(--primary-color-200, #e2e8f0);
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+  padding-top: 0.125rem;
+  padding-bottom: 0.125rem;
 }
 
 /* タスクリスト */
-ul.contains-task-list {
-  @apply space-y-2;
+
+ul.contains-task-list > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.5rem * var(--tw-space-y-reverse));
 }
+
 ul.contains-task-list > li.task-list-item > input[type="checkbox"] {
-  @apply scale-150;
+  --tw-scale-x: 1.5;
+  --tw-scale-y: 1.5;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
+
 ul.contains-task-list > li.task-list-item {
-  @apply flex items-center flex-row gap-2 text-xl;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.25rem;
+  line-height: 1.75rem;
 }
+
 ul.contains-task-list > li.task-list-item::before {
-  @apply text-2xl content-["-"];
+  font-size: 1.5rem;
+  line-height: 2rem;
+  --tw-content: "-";
+  content: var(--tw-content);
 }
 
 /* ソースコードの埋め込み */
+
 .embedCode {
-  @apply block mx-auto my-0 max-w-full h-auto;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  display: block;
+  height: auto;
+  max-width: 100%;
 }
+
 .embedCodeCaption {
-  @apply text-center -mt-3 text-sm font-bold ci-[caption];
+  margin-top: -0.75rem;
+  text-align: center;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 700;
+  counter-increment: caption;
 }
+
 .embedCodeCaption::before {
   content: "コード" counter(chapter) "-" counter(caption) ". ";
 }
 
 /* shiki */
+
 .astro-code,
 .shiki {
-  @apply font-["Rounded_Mgen+_1mn","PlemolJP_Console"] rounded px-4 py-2 border border-gray-300 border-solid block whitespace-pre-wrap break-all;
+  display: block;
+  white-space: pre-wrap;
+  word-break: break-all;
+  border-radius: 0.25rem;
+  border-width: 1px;
+  border-style: solid;
+  --tw-border-opacity: 1;
+  border-color: rgb(209 213 219 / var(--tw-border-opacity, 1));
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  font-family: "Rounded Mgen+ 1mn","PlemolJP Console";
 }
+
 .shiki .diff,
 .shiki .highlighted {
-  @apply -mx-4 px-4 py-[2px];
+  margin-left: -1rem;
+  margin-right: -1rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 2px;
+  padding-bottom: 2px;
 }
 
 /* DOC: https://github.com/shikijs/shiki/issues/3#issuecomment-830564854 */
+
 /* DOC: https://github.com/shikijs/shiki/blob/main/packages/transformers/test/fixtures/diff/a.js.output.html */
+
 .shiki > code {
   counter-reset: shiki_line_number;
   counter-increment: shiki_line_number 0;
 }
+
 .shiki > code .line::before {
-  @apply w-8 mr-6 inline-block text-right text-gray-600 text-xs;
+  margin-right: 1.5rem;
+  display: inline-block;
+  width: 2rem;
+  text-align: right;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  --tw-text-opacity: 1;
+  color: rgb(75 85 99 / var(--tw-text-opacity, 1));
   content: counter(shiki_line_number);
   counter-increment: shiki_line_number;
 }
+
 /* shiki 1.1.x は末尾に空の .line を出す。新しい shiki は出さない。
    どちらでも行番号がずれないよう、空の行だけを取り除く
    （:not(:last-child) で除くと、新しい shiki では最後の行から番号が消える）。 */
+
 .shiki > code .line:last-child:empty {
   display: none;
 }
+
 .shiki > code .line.diff.add {
-  @apply bg-[rgba(117,249,117,0.4)];
+  background-color: rgba(117,249,117,0.4);
 }
+
 .shiki > code .line.diff.add::before {
-  @apply text-[green] w-8;
+  width: 2rem;
+  --tw-text-opacity: 1;
+  color: rgb(0 128 0 / var(--tw-text-opacity, 1));
   content: counter(shiki_line_number) " +";
 }
+
 .shiki > code .line.diff.remove {
-  @apply bg-[rgba(250,112,112,0.4)];
+  background-color: rgba(250,112,112,0.4);
 }
+
 .shiki > code .line.diff.remove::before {
-  @apply text-[red] w-8;
+  width: 2rem;
+  --tw-text-opacity: 1;
+  color: rgb(255 0 0 / var(--tw-text-opacity, 1));
   content: counter(shiki_line_number) " -";
 }
 
 /* DOC: https://github.com/shikijs/shiki/blob/main/packages/transformers/test/fixtures/highlight/a.js.output.html */
-.shiki .highlighted { @apply bg-[rgba(0,119,255,0.1)]; }
+
+.shiki .highlighted {
+  background-color: rgba(0,119,255,0.1);
+}
 
 /* DOC: https://github.com/shikijs/shiki/blob/main/packages/transformers/test/fixtures/highlight-word/occurrence.js.output.html */
+
 .shiki .highlighted-word {
-  @apply py-[2px] bg-[rgba(0,119,255,0.1)];
+  background-color: rgba(0,119,255,0.1);
+  padding-top: 2px;
+  padding-bottom: 2px;
 }
 
 /* DOC: https://github.com/shikijs/shiki/blob/main/packages/transformers/test/fixtures/error-level/a.js.output.html */
-.shiki .highlighted.warning { @apply bg-[rgba(255,255,3,0.5)]; }
-.shiki .highlighted.error { @apply bg-[rgba(255,0,0,0.5)]; }
+
+.shiki .highlighted.warning {
+  background-color: rgba(255,255,3,0.5);
+}
+
+.shiki .highlighted.error {
+  background-color: rgba(255,0,0,0.5);
+}
 
 /* Page Running elements https://www.w3.org/TR/css-gcpm-3/#running-elements */
+
 .topCenter {
   position: running(topCenter);
 }
+
 .topRight {
   position: running(topRight);
 }
+
 .topRightCorner {
   position: running(topRightCorner);
 }
+
 .topLeftCorner {
   position: running(topLeftCorner);
 }
+
 .bottomRight {
   position: running(bottomRight);
 }
+
 .bottomRightCorner {
   position: running(bottomRightCorner);
 }
+
 .bottomLeft {
   position: running(bottomLeft);
 }
+
 .bottomLeftCorner {
   position: running(bottomLeftCorner);
 }
+
 .leftPageLeftTop {
   position: running(leftPageLeftTop);
 }
+
 .leftPageLeftMiddle {
   position: running(leftPageLeftMiddle);
 }
+
 .leftPageLeftBottom {
   position: running(leftPageLeftBottom);
 }
+
 .rightPageRightTop {
   position: running(rightPageRightTop);
 }
+
 .rightPageRightMiddle {
   position: running(rightPageRightMiddle);
 }
+
 .rightPageRightBottom {
   position: running(rightPageRightBottom);
 }
 
 /* 見出しフォントサイズの調整 */
+
 @media print {
   h1 {
-    @apply pt-10 text-4xl font-black mb-2;
+    margin-bottom: 0.5rem;
+    padding-top: 2.5rem;
+    font-size: 2.25rem;
+    line-height: 2.5rem;
+    font-weight: 900;
   }
   h1::before {
-    @apply text-2xl font-bold ml-[2px];
+    margin-left: 2px;
+    font-size: 1.5rem;
+    line-height: 2rem;
+    font-weight: 700;
   }
   h1 + p {
-    @apply px-3 font-bold;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+    font-weight: 700;
   }
   h2 {
-    @apply text-3xl;
+    font-size: 1.875rem;
+    line-height: 2.25rem;
   }
-  /* h2 > span {
-    @apply pl-3 text-base;
-  } */
   h3 {
-    @apply text-2xl;
+    font-size: 1.5rem;
+    line-height: 2rem;
   }
-  /* h3 > span {
-    @apply pl-3 text-[10px];
-  } */
   h4 {
-    @apply text-xl;
+    font-size: 1.25rem;
+    line-height: 1.75rem;
   }
   h5 {
-    @apply text-lg;
+    font-size: 1.125rem;
+    line-height: 1.75rem;
   }
   h1,
   h2,
@@ -338,143 +449,185 @@ ul.contains-task-list > li.task-list-item::before {
 }
 
 /* 著者の表示スタイル */
+
 .doc-author {
-  @apply text-right mb-7;
-  box-shadow: 0 0.7px 0 -0.4px theme("colors.stone.500");
+  margin-bottom: 1.75rem;
+  text-align: right;
+  box-shadow: 0 0.7px 0 -0.4px #78716c;
 }
 
 /* 目次の章や節の表示 */
+
 #toc-body {
   page: toc;
 }
+
 @page toc {
   @top-right {
     content: none;
   }
 }
+
 /* 目次の行は折り返さない。
    target-counter(page) の桁数が変わると行の折り返しが変わり、
    それが総ページ数を変え、また桁数が変わる……という振動を起こして
    組版が収束しなくなる（ページ数が増えるとタイムアウトする）。
    行を折り返さないことで、ページ番号の桁数と行数を切り離す。 */
+
 #toc a > div > div {
   white-space: nowrap;
 }
+
 #toc a::after {
   white-space: nowrap;
   flex: 1 1 auto;
 }
+
 #toc .header1::before {
   content: "第" target-counter(attr(data-href), chapter) "章 ";
 }
+
 #toc .header2::before {
   content: target-counter(attr(data-href), chapter) "-" target-counter(attr(data-href), header2) ". ";
 }
+
 #toc .header3::before {
   content: target-counter(attr(data-href), chapter) "-" target-counter(attr(data-href), header2) "." target-counter(attr(data-href), header3) ". ";
 }
+
 #toc .header4::before {
   content: target-counter(attr(data-href), chapter) "-" target-counter(attr(data-href), header2) "." target-counter(attr(data-href), header3) "." target-counter(attr(data-href), header4) ". ";
 }
+
 #toc .header5::before {
   content: target-counter(attr(data-href), chapter) "-" target-counter(attr(data-href), header2) "." target-counter(attr(data-href), header3) "." target-counter(attr(data-href), header4) "." target-counter(attr(data-href), header5) ". ";
 }
 
 /* 別の章(h1)や節(h2)へのリンク */
+
 a.chapref::after {
   content: " (" target-counter(attr(href), page) "ページ)";
 }
+
 a.chapref::before {
   content: "第" target-counter(attr(href), chapter) "章 ";
 }
+
 a.h2ref::after {
   content: " / ";
 }
+
 a.h2ref::before {
   content: "第" target-counter(attr(href), chapter) "章 ";
 }
+
 a.h2title::before {
   content: target-counter(attr(href url), header2) ". ";
 }
+
 a.h2title::after {
   content: " (" target-counter(attr(href), page) "ページ)";
 }
+
 a.imageref::before {
   content: "図" target-counter(attr(href), chapter) "-" target-counter(attr(href url), caption) ". ";
 }
+
 a.imageref::after {
   content: " (" target-counter(attr(href), page) "ページ)";
 }
+
 a.coderef::before {
   content: "コード" target-counter(attr(href), chapter) "-" target-counter(attr(href url), caption) ". ";
 }
+
 a.coderef::after {
   content: " (" target-counter(attr(href), page) "ページ)";
 }
+
 a.tableref::before {
   content: "表" target-counter(attr(href), chapter) "-" target-counter(attr(href url), caption) ". ";
 }
+
 a.tableref::after {
   content: " (" target-counter(attr(href), page) "ページ)";
 }
 
 /* チャプターのカウンター */
+
 @page chapter:first {
   counter-reset: chapter;
 }
+
 @page chapter:nth(1) {
   counter-increment: chapter;
 }
+
 .chapter h1::before {
-  @apply block mb-1 text-[50%];
+  margin-bottom: 0.25rem;
+  display: block;
+  font-size: 50%;
   content: "第" counter(chapter) "章";
 }
+
 .chapter {
   page: chapter;
 }
 
 /* h2〜h5のカウンター */
+
 .chapter body {
   counter-reset: header2 header3 header4 header5 caption;
 }
+
 .chapter h1 {
   counter-reset: header2 header3 header4 header5 caption;
 }
+
 .chapter h2::before {
-  @apply block text-[70%];
+  display: block;
+  font-size: 70%;
   content: counter(chapter) "-" counter(header2) ". ";
 }
+
 .chapter h2 {
   counter-increment: header2;
   counter-reset: header3 header4 header5;
 }
+
 .chapter h3::before {
-  @apply text-[70%];
+  font-size: 70%;
   content: counter(chapter) "-" counter(header2) "." counter(header3) ". ";
 }
+
 .chapter h3 {
   counter-increment: header3;
   counter-reset: header4 header5;
 }
+
 .chapter h4::before {
-  @apply text-[70%];
+  font-size: 70%;
   content: counter(chapter) "-" counter(header2) "." counter(header3) "."
     counter(header4) ". ";
 }
+
 .chapter h4 {
   counter-increment: header4;
   counter-reset: header5;
 }
+
 .chapter h5::before {
-  @apply text-[70%];
+  font-size: 70%;
   content: counter(chapter) "-" counter(header2) "." counter(header3) "."
     counter(header4) "." counter(header5) ". ";
 }
+
 .chapter h5 {
   counter-increment: header5;
 }
 
 /* footnote */
+
 .footnote {
   float: footnote;
   footnote-display: block;
@@ -482,17 +635,20 @@ a.tableref::after {
   background-color: #fff;
   font-weight: normal;
 }
+
 .footnote::footnote-call {
   content: "[" counter(footnote) "]";
   display: inline;
   vertical-align: super;
 }
+
 .footnote::footnote-marker {
   content: "[" counter(footnote) "] ";
   display: inline;
 }
 
 /* footnote inline */
+
 .footnote-inline {
   background-color: #eee;
   color: gray;
@@ -503,110 +659,176 @@ a.tableref::after {
   padding-bottom: 0.25rem;
   border-radius: 0.25rem;
 }
+
 .footnote-inline a {
   word-break: break-all;
 }
 
 /* appendix */
+
 #appendix-body {
   page: appendix;
 }
+
 @page appendix {
   @top-right {
     content: none;
   }
 }
+
 .appendix {
-  @apply px-1 py-0.5 bg-primary-200 rounded mx-1;;
+  margin-left: 0.25rem;
+  margin-right: 0.25rem;
+  border-radius: 0.25rem;
+  background-color: var(--primary-color-200, #e2e8f0);
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+  padding-top: 0.125rem;
+  padding-bottom: 0.125rem;
 }
 
 /* 1段組み用のスタイル */
+
 .colmun-count-1 {
   column-count: 1;
 }
+
 /* 2段組み用のスタイル */
+
 .colmun-count-2 {
-  /* @apply pb-7; */
   column-count: 2;
   column-gap: 2rem;
-  column-rule: solid 1px theme("colors.stone.300");
+  column-rule: solid 1px #d6d3d1;
   /* column-fill: balance-all; */
   /* column-fill: balance; */
   column-fill: auto;
 }
+
 /* 2段組みをまたぐ要素（見出し、画像、ソースコード）などに指定する */
-.column-span-all {
+
+.column-span-all,
+.column-span-all-amber-100,
+.column-span-all-stone-100 {
   /* INFO: https://github.com/vivliostyle/vivliostyle.js/issues/542 */
   float-reference: column;
   float: top;
   column-span: all;
 }
+
 .column-span-all-h5 {
   background-color: lightgray;
   padding: 1rem;
   column-span: all;
 }
+
 .column-span-all-amber-100 {
-  @apply column-span-all;
-  background-color: theme("colors.amber.100");
-  color: theme("colors.amber.800");
+  background-color: #fef3c7;
+  color: #92400e;
 }
+
 .column-span-all-stone-100 {
-  @apply column-span-all;
-  background-color: theme("colors.stone.100");
-  color: theme("colors.stone.800");
+  background-color: #f5f5f4;
+  color: #292524;
 }
 
 /* チャットエリアのスタイル */
+
+.chat > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.5rem * var(--tw-space-y-reverse));
+}
+
 .chat {
-  @apply space-y-2;
   padding-left: 0px;
 }
+
 .chat-header {
-  @apply flex content-center justify-center text-center list-none;
+  display: flex;
+  list-style-type: none;
+  align-content: center;
+  justify-content: center;
+  text-align: center;
 }
+
 .chat-header > div {
-  @apply px-4 py-2 mt-4 text-xs rounded-full min-w-fit max-w-fit;
-  background-color: theme("colors.stone.200");
-  color: theme("colors.stone.800");
+  margin-top: 1rem;
+  min-width: fit-content;
+  max-width: fit-content;
+  border-radius: 9999px;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  background-color: #e7e5e4;
+  color: #292524;
   border-color: transparent;
 }
+
 .chat-left {
-  @apply flex justify-start pt-4;
+  display: flex;
+  justify-content: flex-start;
+  padding-top: 1rem;
 }
+
 .chat-left-invisible {
-  @apply flex justify-start;
+  display: flex;
+  justify-content: flex-start;
 }
+
 .chat-left-invisible .trianle-left,
 .chat-left-invisible .chat-faceicon {
-  @apply invisible;
+  visibility: hidden;
 }
+
 .chat-right {
-  @apply flex justify-end pt-4;
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 1rem;
 }
+
 .chat-right-invisible {
-  @apply flex justify-end;
+  display: flex;
+  justify-content: flex-end;
 }
+
 .chat-right-invisible .trianle-right,
 .chat-right-invisible .chat-faceicon {
-  @apply invisible;
+  visibility: hidden;
 }
+
 .chat-contents {
-  @apply px-4;
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
+
 .chat-faceicon {
-  @apply relative p-0;
+  position: relative;
+  padding: 0px;
 }
+
 .chat-faceicon > img {
-  @apply w-16 h-16;
+  height: 4rem;
+  width: 4rem;
   border-radius: 50%;
 }
+
 .chat-faceicon-name {
-  @apply absolute left-0 right-0 m-auto text-[8px] text-center top-[4.125rem];
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  top: 4.125rem;
+  margin: auto;
+  text-align: center;
+  font-size: 8px;
 }
+
 .chat .qrcode {
-  @apply w-36;
+  width: 9rem;
 }
+
 figure.qrcode-figure {
   display: flex;
   flex-direction: row;
@@ -614,320 +836,398 @@ figure.qrcode-figure {
   margin: 0.5rem 0;
   break-inside: avoid;
 }
+
 figure.qrcode-figure figcaption {
   word-break: break-all;
   overflow-wrap: anywhere;
   font-size: 0.7em;
   margin-left: 8px;
 }
-.balloon {
-  @apply relative max-w-xl px-4 py-2 rounded-lg border-[1px] border-solid my-1;
+
+.balloon,
+.balloon-indigo-200,
+.balloon-fuchsia-200,
+.balloon-stone-200,
+.balloon-slate-200,
+.balloon-blue-200,
+.balloon-sky-200,
+.balloon-cyan-200,
+.balloon-teal-200,
+.balloon-emerald-200,
+.balloon-green-200,
+.balloon-lime-200,
+.balloon-yellow-200,
+.balloon-amber-200,
+.balloon-orange-200,
+.balloon-red-200,
+.balloon-rose-200,
+.balloon-pink-200,
+.balloon-purple-200,
+.balloon-violet-200 {
+  position: relative;
+  margin-top: 0.25rem;
+  margin-bottom: 0.25rem;
+  max-width: 36rem;
+  border-radius: 0.5rem;
+  border-width: 1px;
+  border-style: solid;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
   border-color: transparent;
 }
-.balloon > .trianle-left {
+
+.balloon > .trianle-left,
+.balloon-indigo-200 > .trianle-left,
+.balloon-fuchsia-200 > .trianle-left,
+.balloon-stone-200 > .trianle-left,
+.balloon-slate-200 > .trianle-left,
+.balloon-blue-200 > .trianle-left,
+.balloon-sky-200 > .trianle-left,
+.balloon-cyan-200 > .trianle-left,
+.balloon-teal-200 > .trianle-left,
+.balloon-emerald-200 > .trianle-left,
+.balloon-green-200 > .trianle-left,
+.balloon-lime-200 > .trianle-left,
+.balloon-yellow-200 > .trianle-left,
+.balloon-amber-200 > .trianle-left,
+.balloon-orange-200 > .trianle-left,
+.balloon-red-200 > .trianle-left,
+.balloon-rose-200 > .trianle-left,
+.balloon-pink-200 > .trianle-left,
+.balloon-purple-200 > .trianle-left,
+.balloon-violet-200 > .trianle-left {
   border: 1rem solid transparent;
   position: absolute;
   left: -1.75rem;
   top: 0;
   transform: rotate(0deg);
 }
-.balloon > .trianle-right {
+
+.balloon > .trianle-right,
+.balloon-indigo-200 > .trianle-right,
+.balloon-fuchsia-200 > .trianle-right,
+.balloon-stone-200 > .trianle-right,
+.balloon-slate-200 > .trianle-right,
+.balloon-blue-200 > .trianle-right,
+.balloon-sky-200 > .trianle-right,
+.balloon-cyan-200 > .trianle-right,
+.balloon-teal-200 > .trianle-right,
+.balloon-emerald-200 > .trianle-right,
+.balloon-green-200 > .trianle-right,
+.balloon-lime-200 > .trianle-right,
+.balloon-yellow-200 > .trianle-right,
+.balloon-amber-200 > .trianle-right,
+.balloon-orange-200 > .trianle-right,
+.balloon-red-200 > .trianle-right,
+.balloon-rose-200 > .trianle-right,
+.balloon-pink-200 > .trianle-right,
+.balloon-purple-200 > .trianle-right,
+.balloon-violet-200 > .trianle-right {
   border: 1rem solid transparent;
   position: absolute;
   right: -1.75rem;
   top: 0;
   transform: rotate(180deg);
 }
+
 .balloon-indigo-200 {
-  @apply balloon;
-  background-color: theme("colors.indigo.200");
-  color: theme("colors.indigo.800");
-  border-color: transparent;
+  background-color: #c7d2fe;
+  color: #3730a3;
 }
-.balloon-indigo-200 > .trianle-left {
-  border-right: 1rem solid theme("colors.indigo.200");
-}
+
+.balloon-indigo-200 > .trianle-left,
 .balloon-indigo-200 > .trianle-right {
-  border-right: 1rem solid theme("colors.indigo.200");
+  border-right: 1rem solid #c7d2fe;
 }
+
 .balloon-fuchsia-200 {
-  @apply balloon;
-  background-color: theme("colors.fuchsia.200");
-  color: theme("colors.fuchsia.800");
-  border-color: transparent;
+  background-color: #f5d0fe;
+  color: #86198f;
 }
-.balloon-fuchsia-200 > .trianle-left {
-  border-right: 1rem solid theme("colors.fuchsia.200");
-}
+
+.balloon-fuchsia-200 > .trianle-left,
 .balloon-fuchsia-200 > .trianle-right {
-  border-right: 1rem solid theme("colors.fuchsia.200");
+  border-right: 1rem solid #f5d0fe;
 }
+
 .balloon-stone-200 {
-  @apply balloon;
-  background-color: theme("colors.stone.200");
-  color: theme("colors.stone.800");
-  border-color: transparent;
+  background-color: #e7e5e4;
+  color: #292524;
 }
-.balloon-stone-200 > .trianle-left {
-  border-right: 1rem solid theme("colors.stone.200");
-}
+
+.balloon-stone-200 > .trianle-left,
 .balloon-stone-200 > .trianle-right {
-  border-right: 1rem solid theme("colors.stone.200");
+  border-right: 1rem solid #e7e5e4;
 }
+
 .balloon-slate-200 {
-  @apply balloon;
-  background-color: theme("colors.slate.200");
-  color: theme("colors.slate.800");
-  border-color: transparent;
+  background-color: #e2e8f0;
+  color: #1e293b;
 }
-.balloon-slate-200 > .trianle-left {
-  border-right: 1rem solid theme("colors.slate.200");
-}
+
+.balloon-slate-200 > .trianle-left,
 .balloon-slate-200 > .trianle-right {
-  border-right: 1rem solid theme("colors.slate.200");
+  border-right: 1rem solid #e2e8f0;
 }
+
 .balloon-blue-200 {
-  @apply balloon;
-  background-color: theme("colors.blue.200");
-  color: theme("colors.blue.800");
-  border-color: transparent;
+  background-color: #bfdbfe;
+  color: #1e40af;
 }
-.balloon-blue-200 > .trianle-left {
-  border-right: 1rem solid theme("colors.blue.200");
-}
+
+.balloon-blue-200 > .trianle-left,
 .balloon-blue-200 > .trianle-right {
-  border-right: 1rem solid theme("colors.blue.200");
+  border-right: 1rem solid #bfdbfe;
 }
+
 .balloon-sky-200 {
-  @apply balloon;
-  background-color: theme("colors.sky.200");
-  color: theme("colors.sky.800");
-  border-color: transparent;
+  background-color: #bae6fd;
+  color: #075985;
 }
-.balloon-sky-200 > .trianle-left {
-  border-right: 1rem solid theme("colors.sky.200");
-}
+
+.balloon-sky-200 > .trianle-left,
 .balloon-sky-200 > .trianle-right {
-  border-right: 1rem solid theme("colors.sky.200");
+  border-right: 1rem solid #bae6fd;
 }
+
 .balloon-cyan-200 {
-  @apply balloon;
-  background-color: theme("colors.cyan.200");
-  color: theme("colors.cyan.800");
-  border-color: transparent;
+  background-color: #a5f3fc;
+  color: #155e75;
 }
-.balloon-cyan-200 > .trianle-left {
-  border-right: 1rem solid theme("colors.cyan.200");
-}
+
+.balloon-cyan-200 > .trianle-left,
 .balloon-cyan-200 > .trianle-right {
-  border-right: 1rem solid theme("colors.cyan.200");
+  border-right: 1rem solid #a5f3fc;
 }
+
 .balloon-teal-200 {
-  @apply balloon;
-  background-color: theme("colors.teal.200");
-  color: theme("colors.teal.800");
-  border-color: transparent;
+  background-color: #99f6e4;
+  color: #115e59;
 }
-.balloon-teal-200 > .trianle-left {
-  border-right: 1rem solid theme("colors.teal.200");
-}
+
+.balloon-teal-200 > .trianle-left,
 .balloon-teal-200 > .trianle-right {
-  border-right: 1rem solid theme("colors.teal.200");
+  border-right: 1rem solid #99f6e4;
 }
+
 .balloon-emerald-200 {
-  @apply balloon;
-  background-color: theme("colors.emerald.200");
-  color: theme("colors.emerald.800");
-  border-color: transparent;
+  background-color: #a7f3d0;
+  color: #065f46;
 }
-.balloon-emerald-200 > .trianle-left {
-  border-right: 1rem solid theme("colors.emerald.200");
-}
+
+.balloon-emerald-200 > .trianle-left,
 .balloon-emerald-200 > .trianle-right {
-  border-right: 1rem solid theme("colors.emerald.200");
+  border-right: 1rem solid #a7f3d0;
 }
+
 .balloon-green-200 {
-  @apply balloon;
-  background-color: theme("colors.green.200");
-  color: theme("colors.green.800");
-  border-color: transparent;
+  background-color: #bbf7d0;
+  color: #166534;
 }
-.balloon-green-200 > .trianle-left {
-  border-right: 1rem solid theme("colors.green.200");
-}
+
+.balloon-green-200 > .trianle-left,
 .balloon-green-200 > .trianle-right {
-  border-right: 1rem solid theme("colors.green.200");
+  border-right: 1rem solid #bbf7d0;
 }
+
 .balloon-lime-200 {
-  @apply balloon;
-  background-color: theme("colors.lime.200");
-  color: theme("colors.lime.800");
-  border-color: transparent;
+  background-color: #d9f99d;
+  color: #3f6212;
 }
-.balloon-lime-200 > .trianle-left {
-  border-right: 1rem solid theme("colors.lime.200");
-}
+
+.balloon-lime-200 > .trianle-left,
 .balloon-lime-200 > .trianle-right {
-  border-right: 1rem solid theme("colors.lime.200");
+  border-right: 1rem solid #d9f99d;
 }
+
 .balloon-yellow-200 {
-  @apply balloon;
-  background-color: theme("colors.yellow.200");
-  color: theme("colors.yellow.800");
-  border-color: transparent;
+  background-color: #fef08a;
+  color: #854d0e;
 }
-.balloon-yellow-200 > .trianle-left {
-  border-right: 1rem solid theme("colors.yellow.200");
-}
+
+.balloon-yellow-200 > .trianle-left,
 .balloon-yellow-200 > .trianle-right {
-  border-right: 1rem solid theme("colors.yellow.200");
+  border-right: 1rem solid #fef08a;
 }
+
 .balloon-amber-200 {
-  @apply balloon;
-  background-color: theme("colors.amber.200");
-  color: theme("colors.amber.800");
-  border-color: transparent;
+  background-color: #fde68a;
+  color: #92400e;
 }
-.balloon-amber-200 > .trianle-left {
-  border-right: 1rem solid theme("colors.amber.200");
-}
+
+.balloon-amber-200 > .trianle-left,
 .balloon-amber-200 > .trianle-right {
-  border-right: 1rem solid theme("colors.amber.200");
+  border-right: 1rem solid #fde68a;
 }
+
 .balloon-orange-200 {
-  @apply balloon;
-  background-color: theme("colors.orange.200");
-  color: theme("colors.orange.800");
-  border-color: transparent;
+  background-color: #fed7aa;
+  color: #9a3412;
 }
-.balloon-orange-200 > .trianle-left {
-  border-right: 1rem solid theme("colors.orange.200");
-}
+
+.balloon-orange-200 > .trianle-left,
 .balloon-orange-200 > .trianle-right {
-  border-right: 1rem solid theme("colors.orange.200");
+  border-right: 1rem solid #fed7aa;
 }
+
 .balloon-red-200 {
-  @apply balloon;
-  background-color: theme("colors.red.200");
-  color: theme("colors.red.800");
-  border-color: transparent;
+  background-color: #fecaca;
+  color: #991b1b;
 }
-.balloon-red-200 > .trianle-left {
-  border-right: 1rem solid theme("colors.red.200");
-}
+
+.balloon-red-200 > .trianle-left,
 .balloon-red-200 > .trianle-right {
-  border-right: 1rem solid theme("colors.red.200");
+  border-right: 1rem solid #fecaca;
 }
+
 .balloon-rose-200 {
-  @apply balloon;
-  background-color: theme("colors.rose.200");
-  color: theme("colors.rose.800");
-  border-color: transparent;
+  background-color: #fecdd3;
+  color: #9f1239;
 }
-.balloon-rose-200 > .trianle-left {
-  border-right: 1rem solid theme("colors.rose.200");
-}
+
+.balloon-rose-200 > .trianle-left,
 .balloon-rose-200 > .trianle-right {
-  border-right: 1rem solid theme("colors.rose.200");
+  border-right: 1rem solid #fecdd3;
 }
+
 .balloon-pink-200 {
-  @apply balloon;
-  background-color: theme("colors.pink.200");
-  color: theme("colors.pink.800");
-  border-color: transparent;
+  background-color: #fbcfe8;
+  color: #9d174d;
 }
-.balloon-pink-200 > .trianle-left {
-  border-right: 1rem solid theme("colors.pink.200");
-}
+
+.balloon-pink-200 > .trianle-left,
 .balloon-pink-200 > .trianle-right {
-  border-right: 1rem solid theme("colors.pink.200");
+  border-right: 1rem solid #fbcfe8;
 }
+
 .balloon-purple-200 {
-  @apply balloon;
-  background-color: theme("colors.purple.200");
-  color: theme("colors.purple.800");
-  border-color: transparent;
+  background-color: #e9d5ff;
+  color: #6b21a8;
 }
-.balloon-purple-200 > .trianle-left {
-  border-right: 1rem solid theme("colors.purple.200");
-}
+
+.balloon-purple-200 > .trianle-left,
 .balloon-purple-200 > .trianle-right {
-  border-right: 1rem solid theme("colors.purple.200");
+  border-right: 1rem solid #e9d5ff;
 }
+
 .balloon-violet-200 {
-  @apply balloon;
-  background-color: theme("colors.violet.200");
-  color: theme("colors.violet.800");
-  border-color: transparent;
+  background-color: #ddd6fe;
+  color: #5b21b6;
 }
-.balloon-violet-200 > .trianle-left {
-  border-right: 1rem solid theme("colors.violet.200");
-}
+
+.balloon-violet-200 > .trianle-left,
 .balloon-violet-200 > .trianle-right {
-  border-right: 1rem solid theme("colors.violet.200");
+  border-right: 1rem solid #ddd6fe;
 }
+
 .balloon-contents {
-  @apply p-2;
+  padding: 0.5rem;
 }
+
 .balloon-contents > img {
-  @apply w-full mt-2;
+  margin-top: 0.5rem;
+  width: 100%;
 }
 
 /* 画像埋め込み */
+
 /* className を指定しない画像には .embedImage が付かないため、
    figure 側からも同じ基本スタイルを当てて原寸表示になるのを防ぐ */
+
 .embedImage,
 .embedImageFigure img {
-  @apply block mx-auto my-0 max-w-full h-auto;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  display: block;
+  height: auto;
+  max-width: 100%;
 }
+
 /* 本文に差し込むスクリーンショットなどは枠線をつける */
+
 .embedImageFigure img {
-  @apply border border-solid;
+  border-width: 1px;
+  border-style: solid;
 }
+
 /* QRコードは小さく、枠線なしで表示する */
+
 .embedImageFigure img.qrcode {
-  @apply w-32 h-32 border-0;
+  height: 8rem;
+  width: 8rem;
+  border-width: 0px;
 }
+
 /* サンプルを埋め込んだQRは、紙面で読み取れる大きさが要る。
    figure にはブラウザ既定の左右マージン（40px）が残っていて段幅より狭くなるため、
    それを外して段の幅いっぱいに広げる。B5・2段組みで約60mm角になる。 */
+
 .embedImageFigure:has(img.qrsample) {
-  @apply mx-0;
+  margin-left: 0px;
+  margin-right: 0px;
 }
+
 .embedImageFigure img.qrsample {
-  @apply w-full border-0;
+  width: 100%;
+  border-width: 0px;
 }
+
 /* 1ページ全体を使う画像 */
+
 .embedImageFigure img.onepage {
-  @apply w-auto h-[76rem] border-0;
+  height: 76rem;
+  width: auto;
+  border-width: 0px;
 }
+
 .embedImageCaption {
-  @apply text-center text-sm font-bold ci-[caption];
+  text-align: center;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 700;
+  counter-increment: caption;
 }
+
 .embedImageCaption::before {
   content: "図" counter(chapter) "-" counter(caption) ". ";
 }
+
 .embedImageFigure {
-  @apply block text-center;
+  display: block;
+  text-align: center;
 }
 
 /* Mermaid、PlantUML */
+
 img[id^="mermaid-"], img[src^="https://www.plantuml.com/plantuml/png/"] {
-  @apply block max-w-[75%] h-auto mx-auto my-0;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  display: block;
+  height: auto;
+  max-width: 75%;
 }
 
 /* チャプターカバー */
+
 a.chapterCoverTitle::before {
   content: "Chapter" target-counter(attr(href), chapter) " ";
 }
 
 /* 左柱 */
+
 a.leftPillarChapter::before {
   content: "第" target-counter(attr(href), chapter) "章 ";
   writing-mode: vertical-rl;
 }
 
 /* 右柱 TODO: 時々、??になるバグがあるので使わない */
+
 /* a.rightPillarChapterNo::after {
   content: target-counter(attr(href), chapter) "章 ";
 } */
@@ -936,113 +1236,193 @@ a.leftPillarChapter::before {
    VivlioStyleのバグ: target-counterの前方参照解決時に @page chapter:nth(1) が
    余分に発火し counter(chapter) が誤った値になるため、
    Handlebarsでビルド時に章番号を直接埋め込む方式で回避する */
+
 .rightPageChapterHeader {
   position: running(rightPageChapterHeader);
 }
 
 /* テーブル */
+
 table {
-  @apply border-collapse;
+  border-collapse: collapse;
 }
+
 table caption {
-  @apply text-sm font-bold caption-bottom ci-[caption];
+  caption-side: bottom;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 700;
+  counter-increment: caption;
 }
+
 table caption::before {
   content: "表" counter(chapter) "-" counter(caption) ". ";
 }
+
 table th,
 table td {
-  @apply px-1 py-2 border-0 border-solid border-x-2 border-white;
+  border-width: 0px;
+  border-left-width: 2px;
+  border-right-width: 2px;
+  border-style: solid;
+  --tw-border-opacity: 1;
+  border-color: rgb(255 255 255 / var(--tw-border-opacity, 1));
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
 }
+
 table th:first-child,
 table td:first-child {
-  @apply py-2 pl-2;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  padding-left: 0.5rem;
 }
+
 table th {
-  @apply text-xs bg-primary-500 border-solid border-y-2 text-white;
+  border-top-width: 2px;
+  border-bottom-width: 2px;
+  border-style: solid;
+  background-color: var(--primary-color-500, #64748b);
+  font-size: 0.75rem;
+  line-height: 1rem;
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity, 1));
 }
+
 table td {
- @apply bg-primary-200
+  background-color: var(--primary-color-200, #e2e8f0);
 }
+
 table tr {
-  @apply border-solid border-b-2 border-white;
+  border-bottom-width: 2px;
+  border-style: solid;
+  --tw-border-opacity: 1;
+  border-color: rgb(255 255 255 / var(--tw-border-opacity, 1));
 }
+
 table tr:last-child {
-  @apply border-b-2 border-solid border-white;
+  border-bottom-width: 2px;
+  border-style: solid;
+  --tw-border-opacity: 1;
+  border-color: rgb(255 255 255 / var(--tw-border-opacity, 1));
 }
 
 /* 奥付のスタイル */
+
 #colophon {
   page: colophon;
 }
+
 @page colophon {
   @top-right {
     content: none;
   }
 }
+
 #colophon {
-  @apply relative [float:bottom] [float-reference:page] mb-0;
+  position: relative;
+  margin-bottom: 0px;
+  float-reference: page;
+  float: bottom;
 }
+
 #colophon .editions {
   font-size: 1em;
   padding: 0;
   list-style: none;
 }
+
 #colophon .info {
   width: 100%;
 }
+
 #colophon .info tr {
   border: 0;
   box-shadow: none;
   background-color: white;
 }
+
 #colophon .info tr:first-child {
-  box-shadow: 0 -1.5px 0 -0.4px theme("colors.stone.500");
+  box-shadow: 0 -1.5px 0 -0.4px #78716c;
 }
+
 #colophon .info tr:last-child {
-  box-shadow: 0 1.4px 0 -0.4px theme("colors.stone.500");
+  box-shadow: 0 1.4px 0 -0.4px #78716c;
 }
+
 #colophon .info td {
   vertical-align: top;
   padding-left: 0;
   font-size: 1em;
   background-color: white;
 }
+
 #colophon .info td:first-child {
   text-align: center;
 }
 
 /* 著者プロフィールのスタイル */
+
 #profile {
   page: profile;
 }
+
 @page profile {
   @top-right {
     content: none;
   }
 }
+
 #profile {
   break-before: left;
 }
+
 #profile .author {
   display: flex;
   margin: 1rem 0;
 }
+
 #profile .author img {
   margin: 0 10px 8px 0;
   width: 45px;
   height: 45px;
   border-radius: 50%;
-  background-color: theme("colors.stone.300");
+  background-color: #d6d3d1;
 }
+
 #profile .profile {
   flex-grow: 1;
 }
+
 #profile .profile h5 {
   margin-top: 4px;
   margin-bottom: 0px;
 }
+
 #profile .profile h4 {
   margin-top: 3px;
   margin-bottom: 0px;
+}
+
+.after--text-\[10px\]::after {
+  content: var(--tw-content);
+  font-size: 10px;
+}
+
+.after--text-\[8px\]::after {
+  content: var(--tw-content);
+  font-size: 8px;
+}
+
+.after--target-counter-page::after {
+  content: leader(".") target-counter(attr(href),page);
+}
+
+@media print {
+  .print--text-black {
+    --tw-text-opacity: 1;
+    color: rgb(0 0 0 / var(--tw-text-opacity, 1));
+  }
 }

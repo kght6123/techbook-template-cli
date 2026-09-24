@@ -356,6 +356,10 @@ const publicationJson = "./dist/publication.json";
 const distDir = "./dist";
 const docsDir = "./docs";
 const lockFileDistPath = distDir + "/lockfile";
+const utilitiesCssPath = __dirname + "/../src/tailwind-utilities.css";
+const globalCssSrcDir = __dirname + "/../src";
+const globalCssDistPath = distDir + "/global.css";
+const customCssPath = "./custom.css";
 const chapterTemplateHtmlPath = __dirname + "/../src/chapter-template.html";
 const simpleChapterTemplateHtmlPath = __dirname + "/../src/simplechapter-template.html";
 const appendixTitle = "Appendix";
@@ -404,47 +408,37 @@ const processor = processorRehype.use(rehypeStringify, {
 });
 const config = await jiti.import(process.cwd() + "/techbook.config.ts", { default: true });
 
-const CSS_FILE_MAP = {
-  "JIS-B5": "global.css",
-  "105mm 173mm": "global-105x173.css"
-};
-const cssSrcFileName = CSS_FILE_MAP[config.size] || "global.css";
 const program = new Command();
 program.name("techbook-template-cli").description("TechBook Template CLI utilities.").version((await import('./chunks/package.mjs')).version);
-program.command("dev").description("techbook dev").option("-ph, --h3-port <port>", "h3 server port number", "3000").option("-ps, --sync-port <port>", "sync port number", "3001").option("-kdp, --kindle-direct-print", "kindle direct print mode", "false").action(
-  async ({ h3Port, syncPort }) => {
-    console.info("dev", h3Port, syncPort);
+program.command("dev").description("techbook dev").option("-ph, --h3-port <port>", "h3 server port number", "3000").option("-ps, --sync-port <port>", "sync port number", "3001").option("-kdp, --kindle-direct-print", "kindle direct print mode", "false").option("-cc, --custom-css <customCss>", "custom css file name", customCssPath).action(
+  async ({ h3Port, syncPort, customCss }) => {
+    console.info("dev", h3Port, syncPort, customCss);
     const main = (await import('./chunks/main.mjs')).default;
+    const writeGlobalCss = (await import('./chunks/css.mjs')).default;
     main();
+    writeGlobalCss(customCss);
     (await import('chokidar')).watch(["docs/"]).on("change", async (event, path) => {
       console.info(event, path);
       main();
     });
+    (await import('chokidar')).watch([customCss]).on("change", (event, path) => {
+      console.info(event, path);
+      writeGlobalCss(customCss);
+    });
   }
 );
-program.command("build").description("techbook build").option("-kdp, --kindle-direct-print", "kindle direct print mode", "false").option("-ts, --tailwind-src <tailwindSrc>", "tailwind src file name", __dirname + "/../src/" + cssSrcFileName).option("-tc, --tailwind-config <tailwindConfig>", "tailwind config file name", __dirname + "/../tailwind.config.ts").option("-tp, --tailwind-postcss <tailwindPostcss>", "postcss config file name", __dirname + "/../postcss.config.cjs").option("-vt, --vivliostyle-timeout <vivliostyleTimeout>", "vivliostyle build timeout (seconds)", "600").action(
-  async ({ tailwindSrc, tailwindConfig, tailwindPostcss, vivliostyleTimeout }) => {
-    console.info("build", tailwindSrc, tailwindConfig, tailwindPostcss, vivliostyleTimeout);
+program.command("build").description("techbook build").option("-kdp, --kindle-direct-print", "kindle direct print mode", "false").option("-cc, --custom-css <customCss>", "custom css file name", customCssPath).option("-vt, --vivliostyle-timeout <vivliostyleTimeout>", "vivliostyle build timeout (seconds)", "600").action(
+  async ({ customCss, vivliostyleTimeout }) => {
+    console.info("build", customCss, vivliostyleTimeout);
     const main = (await import('./chunks/main.mjs')).default;
     await main();
-    (await import('cross-spawn')).default.sync("npx", ["--yes", "tailwindcss@3.4.19", "-i", tailwindSrc, "-o", "./dist/global.css", "--no-autoprefixer", "--postcss", tailwindPostcss, "--config", tailwindConfig], { stdio: "inherit" });
+    (await import('./chunks/css.mjs')).default(customCss);
     (await import('cross-spawn')).default.sync("npx", ["--yes", "@vivliostyle/cli", "build", "--style", "./dist/global.css", "--timeout", vivliostyleTimeout], { stdio: "inherit" });
   }
 );
 program.command("viewer").description("techbook viewer").option("-p, --port <port>", "express server port number", "3000").action(async ({ port }) => {
   console.info("viewer");
   await (await import('./chunks/viewer.mjs')).default({ port: parseInt(port) });
-});
-program.command("tailwind").description("techbook tailwind").option("-ts, --tailwind-src <tailwindSrc>", "tailwind src file name", __dirname + "/../src/" + cssSrcFileName).option("-tc, --tailwind-config <tailwindConfig>", "tailwind config file name", __dirname + "/../tailwind.config.ts").option("-tp, --tailwind-postcss <tailwindPostcss>", "postcss config file name", __dirname + "/../postcss.config.cjs").action(async ({ tailwindSrc, tailwindConfig, tailwindPostcss }) => {
-  console.info("tailwind");
-  await (await import('wait-on')).default({
-    interval: 500,
-    resources: [
-      "./dist/lockfile"
-    ]
-  });
-  const result = (await import('cross-spawn')).default.sync("npx", ["--package", "tailwindcss@3.4.19", "--yes", "tailwindcss", "-i", tailwindSrc, "-o", "./dist/global.css", "--watch", "--no-autoprefixer", "--postcss", tailwindPostcss, "--config", tailwindConfig], { stdio: "inherit" });
-  console.info(result);
 });
 program.command("browser").description("techbook browser").option("-p, --port <port>", "browser sync port number", "3001").option("-pp, --proxy-port <proxyPort>", "browser proxy port number", "3000").action(async ({ port, proxyPort }) => {
   console.info("browser");
@@ -490,4 +484,4 @@ program.command("browser").description("techbook browser").option("-p, --port <p
 });
 program.parse();
 
-export { introductionDocPath as A, processor as B, CUSTOM_ID_PATTERN as C, finallyDocPath as D, profileTemplateHtmlPath as E, simpleChapterTemplateHtmlPath as F, chapterTemplateHtmlPath as G, lockFileDistPath as H, cwd as I, appendixTemplateHtmlPath as a, appendixTitle as b, appendixDistPath as c, colophonTemplateHtmlPath as d, config as e, colophonDistPath as f, coverTemplateHtmlPath as g, handlebarCompileOptions as h, frontCoverDistPath as i, backCoverDistPath as j, endCoverDistPath as k, docsDir as l, distDir as m, parseTitleForCodeMeta as n, isTitleForComment as o, processorRehype as p, parseTitleForComment as q, introductionDistPath as r, startCoverDistPath as s, tocDistPath as t, finallyDistPath as u, profileDistPath as v, vivliostyleConfig as w, publicationJson as x, simpleIntroductionTemplateHtmlPath as y, introductionTemplateHtmlPath as z };
+export { introductionDocPath as A, processor as B, CUSTOM_ID_PATTERN as C, finallyDocPath as D, profileTemplateHtmlPath as E, simpleChapterTemplateHtmlPath as F, chapterTemplateHtmlPath as G, lockFileDistPath as H, utilitiesCssPath as I, globalCssDistPath as J, customCssPath as K, globalCssSrcDir as L, cwd as M, appendixTemplateHtmlPath as a, appendixTitle as b, appendixDistPath as c, colophonTemplateHtmlPath as d, config as e, colophonDistPath as f, coverTemplateHtmlPath as g, handlebarCompileOptions as h, frontCoverDistPath as i, backCoverDistPath as j, endCoverDistPath as k, docsDir as l, distDir as m, parseTitleForCodeMeta as n, isTitleForComment as o, processorRehype as p, parseTitleForComment as q, introductionDistPath as r, startCoverDistPath as s, tocDistPath as t, finallyDistPath as u, profileDistPath as v, vivliostyleConfig as w, publicationJson as x, simpleIntroductionTemplateHtmlPath as y, introductionTemplateHtmlPath as z };

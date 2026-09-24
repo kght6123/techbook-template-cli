@@ -1,6 +1,6 @@
 {
   "name": "techbook-template-cli",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "type": "module",
   "bin": {
     "dev": "index.js",
@@ -12,9 +12,7 @@
     "index.js",
     "dist",
     "src/*.html",
-    "src/*.css",
-    "tailwind.config.ts",
-    "postcss.config.cjs"
+    "src/*.css"
   ],
   "scripts": {
     "dev": "unbuild --stub",
@@ -56,9 +54,6 @@
     "lodash": "^4.17.21",
     "mermaid-isomorphic": "^2.2.1",
     "mime": "^4.0.1",
-    "postcss": "^8.4.35",
-    "postcss-import": "^16.0.1",
-    "postcss-nesting": "^12.0.3",
     "puppeteer": "^19.11.1",
     "qrcode": "^1.5.3",
     "rehype-mermaid": "^2.1.0",
@@ -71,7 +66,6 @@
     "remark-toc": "^9.0.0",
     "shiki": "^1.1.7",
     "space-separated-tokens": "^2.0.2",
-    "tailwindcss": "^3.4.1",
     "unbuild": "^3.0.0-rc.11",
     "unified": "^11.0.4",
     "unist-util-visit": "^5.0.0",

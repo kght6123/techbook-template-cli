@@ -54,6 +54,11 @@ export const docsDir = "./docs";
 export const lockFileSrcPath = __dirname + "/../src/lockfile";
 export const lockFileDistPath = distDir + "/lockfile";
 
+export const utilitiesCssPath = __dirname + "/../src/tailwind-utilities.css";
+export const globalCssSrcDir = __dirname + "/../src";
+export const globalCssDistPath = distDir + "/global.css";
+export const customCssPath = "./custom.css";
+
 export const chapterTemplateHtmlPath = __dirname + "/../src/chapter-template.html";
 export const simpleChapterTemplateHtmlPath = __dirname + "/../src/simplechapter-template.html";
 
