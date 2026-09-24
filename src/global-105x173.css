@@ -893,6 +893,15 @@ figure.qrcode-figure figcaption {
 .embedImageFigure img.qrcode {
   @apply w-24 h-24 border-0;
 }
+/* サンプルを埋め込んだQRは、紙面で読み取れる大きさが要る。
+   figure にはブラウザ既定の左右マージン（40px）が残っていて段幅より狭くなるため、
+   それを外して段の幅いっぱいに広げる。B5・2段組みで約60mm角になる。 */
+.embedImageFigure:has(img.qrsample) {
+  @apply mx-0;
+}
+.embedImageFigure img.qrsample {
+  @apply w-full border-0;
+}
 /* 1ページ全体を使う画像 */
 .embedImageFigure img.onepage {
   @apply w-auto h-[44rem] border-0;
