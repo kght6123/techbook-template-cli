@@ -1,12 +1,6 @@
 import { Command } from "commander";
 
-import { config, __dirname } from "./constants";
-
-const CSS_FILE_MAP = {
-  'JIS-B5': 'global.css',
-  '105mm 173mm': 'global-105x173.css'
-};
-const cssSrcFileName = CSS_FILE_MAP[config.size] || 'global.css';
+import { customCssPath } from "./constants";
 
 const program = new Command();
 
@@ -21,15 +15,22 @@ program
   .option("-ph, --h3-port <port>", "h3 server port number", "3000")
   .option("-ps, --sync-port <port>", "sync port number", "3001")
   .option("-kdp, --kindle-direct-print", "kindle direct print mode", "false")
+  .option("-cc, --custom-css <customCss>", "custom css file name", customCssPath)
   .action(
-    async ({ h3Port, syncPort }: { h3Port: string; syncPort: string }) => {
-      console.info("dev", h3Port, syncPort);
+    async ({ h3Port, syncPort, customCss }: { h3Port: string; syncPort: string; customCss: string }) => {
+      console.info("dev", h3Port, syncPort, customCss);
       const main = (await import("./main")).default;
+      const writeGlobalCss = (await import("./css")).default;
       main();
+      writeGlobalCss(customCss);
       // TODO: "src/**/*.ts", "src/**/*.html", "docs/**/*.md"
       (await import("chokidar")).watch(["docs/"]).on("change", async (event, path) => {
         console.info(event, path);
         main();
+      });
+      (await import("chokidar")).watch([customCss]).on("change", (event, path) => {
+        console.info(event, path);
+        writeGlobalCss(customCss);
       });
     },
   );
@@ -38,16 +39,14 @@ program
   .command("build")
   .description("techbook build")
   .option("-kdp, --kindle-direct-print", "kindle direct print mode", "false")
-  .option("-ts, --tailwind-src <tailwindSrc>", "tailwind src file name", __dirname + "/../src/" + cssSrcFileName)
-  .option("-tc, --tailwind-config <tailwindConfig>", "tailwind config file name", __dirname + "/../tailwind.config.ts")
-  .option("-tp, --tailwind-postcss <tailwindPostcss>", "postcss config file name", __dirname + "/../postcss.config.cjs")
+  .option("-cc, --custom-css <customCss>", "custom css file name", customCssPath)
   // ページ数が多いとVivlioStyleの既定の120秒では組版が終わらないため、既定値を延ばしている。
   .option("-vt, --vivliostyle-timeout <vivliostyleTimeout>", "vivliostyle build timeout (seconds)", "600")
-  .action(async ({ tailwindSrc, tailwindConfig, tailwindPostcss, vivliostyleTimeout }: { tailwindSrc: string, tailwindConfig: string, tailwindPostcss: string, vivliostyleTimeout: string }) => {
-      console.info("build", tailwindSrc, tailwindConfig, tailwindPostcss, vivliostyleTimeout);
+  .action(async ({ customCss, vivliostyleTimeout }: { customCss: string, vivliostyleTimeout: string }) => {
+      console.info("build", customCss, vivliostyleTimeout);
       const main = (await import("./main")).default;
       await main();
-      (await import("cross-spawn")).default.sync("npx", ["--yes", "tailwindcss@3.4.19", "-i", tailwindSrc, "-o", "./dist/global.css", "--no-autoprefixer", "--postcss", tailwindPostcss, "--config", tailwindConfig], { stdio: "inherit" });
+      (await import("./css")).default(customCss);
       (await import("cross-spawn")).default.sync("npx", ["--yes", "@vivliostyle/cli", "build", "--style", "./dist/global.css", "--timeout", vivliostyleTimeout], { stdio: "inherit" });
     },
   );
@@ -59,24 +58,6 @@ program
   .action(async ({ port }: { port: string }) => {
     console.info("viewer");
     await (await import("./viewer")).default({ port: parseInt(port) });
-  });
-
-program
-  .command("tailwind")
-  .description("techbook tailwind")
-  .option("-ts, --tailwind-src <tailwindSrc>", "tailwind src file name", __dirname + "/../src/" + cssSrcFileName)
-  .option("-tc, --tailwind-config <tailwindConfig>", "tailwind config file name", __dirname + "/../tailwind.config.ts")
-  .option("-tp, --tailwind-postcss <tailwindPostcss>", "postcss config file name", __dirname + "/../postcss.config.cjs")
-  .action(async ({ tailwindSrc, tailwindConfig, tailwindPostcss }: { tailwindSrc: string, tailwindConfig: string, tailwindPostcss: string }) => {
-    console.info("tailwind");
-    await (await import("wait-on")).default({
-      interval: 500,
-      resources: [
-        "./dist/lockfile",
-      ],
-    });
-    const result = (await import("cross-spawn")).default.sync("npx", ["--package", "tailwindcss@3.4.19", "--yes", "tailwindcss", "-i", tailwindSrc, "-o", "./dist/global.css", "--watch", "--no-autoprefixer", "--postcss", tailwindPostcss, "--config", tailwindConfig], { stdio: "inherit" });
-    console.info(result);
   });
 
 program
