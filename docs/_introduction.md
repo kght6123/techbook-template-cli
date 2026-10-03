@@ -22,8 +22,8 @@ X（旧Twitter）: [@xxx](https://twitter.com/xxx){{footnote 'https://twitter.co
 
 ## 本書のフォントについて
 
-「Mgen+」を使用しています。
+本文は「M PLUS Rounded 1c」、コードは「M PLUS 1 Code」を使用しています。
 
-Licensed under SIL Open Font License 1.1 (http://scripts.sil.org/OFL)
-© 2015 自家製フォント工房、© 2014, 2015 Adobe Systems Incorporated、© 2015 M+ FONTS PROJECT
-(http://jikasei.me/font/mgenplus/)
+Licensed under SIL Open Font License 1.1 (https://openfontlicense.org)
+© 2016 The M+ FONTS Project Authors
+(https://github.com/coz-m/MPLUS_FONTS)
