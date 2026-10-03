@@ -162,6 +162,13 @@ a {
   writing-mode: vertical-rl;
 }
 
+/* コードの書体。code 要素はブラウザ既定で monospace になり pre の指定を継承しないため、ここで指定する */
+code,
+kbd,
+samp {
+  font-family: "M PLUS 1 Code","Rounded Mgen+ 1mn","PlemolJP Console",monospace;
+}
+
 /* インラインコード */
 
 p > code {
