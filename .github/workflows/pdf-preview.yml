@@ -53,7 +53,7 @@ jobs:
           cache: npm
       - run: npm ci
 
-      # 本文は M PLUS Rounded 1c、コードは M PLUS 1 Code。どちらも Google Fonts（OFL）から取得する
+      # 本文は M PLUS Rounded 1c（ファミリー名は Rounded Mplus 1c）、コードは M PLUS 1 Code。どちらも OFL
       - name: フォントを入れる
         run: |
           dir=~/.local/share/fonts; mkdir -p "$dir"
@@ -61,10 +61,13 @@ jobs:
           for w in Regular Medium Bold ExtraBold Black; do
             curl -fsSL -o "$dir/MPLUSRounded1c-$w.ttf" "$base/mplusrounded1c/MPLUSRounded1c-$w.ttf"
           done
-          curl -fsSL -o "$dir/MPLUS1Code.ttf" "$base/mplus1code/MPLUS1Code%5Bwght%5D.ttf"
+          # Google Fonts 版は可変フォントで、PDF に Type 3 で埋め込まれるため、M+ 公式の静的版を使う
+          for w in Regular Bold; do
+            curl -fsSL -o "$dir/MPLUS1Code-$w.ttf" "https://github.com/coz-m/MPLUS_FONTS/raw/master/fonts/MPLUS1Code/ttf/MPLUS1Code-$w.ttf"
+          done
           sudo apt-get install -y -qq fonts-noto-color-emoji poppler-utils > /dev/null
           fc-cache -f > /dev/null
-          fc-list | grep -E "M PLUS (Rounded 1c|1 Code)" | head -3
+          fc-list | grep -E "Rounded Mplus 1c|M PLUS 1 Code" | head -3
 
       - name: Chromium を入れる
         run: npx --yes playwright-core install --with-deps chromium
