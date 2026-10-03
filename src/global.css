@@ -148,7 +148,7 @@
 }
 
 :root {
-  font-family: "Rounded Mgen+ 2p","Rounded Mplus 1c","PlemolJP";
+  font-family: "M PLUS Rounded 1c","Rounded Mgen+ 2p","PlemolJP",sans-serif;
   font-size: 10px;
   line-height: 1.75;
 }
@@ -248,7 +248,7 @@ ul.contains-task-list > li.task-list-item::before {
   padding-right: 1rem;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
-  font-family: "Rounded Mgen+ 1mn","PlemolJP Console";
+  font-family: "M PLUS 1 Code","Rounded Mgen+ 1mn","PlemolJP Console",monospace;
 }
 
 .shiki .diff,

@@ -115,6 +115,24 @@ Markdown 本文に自分で書いた Tailwind のユーティリティクラス�
 
 なお、CLI標準のテンプレートが使うユーティリティクラス（`text-xl`、`flex`、`bg-primary-500` など）は `src/tailwind-utilities.css` として固定化して同梱しているため、その範囲のクラスは引き続き使えます。ただし固定された一覧であり、新しいクラスは増えません。
 
+## フォント
+
+本文は「M PLUS Rounded 1c」、コードは「M PLUS 1 Code」を使います。どちらも Google Fonts から無料で入手できます（SIL Open Font License）。
+
+- M PLUS Rounded 1c: https://fonts.google.com/specimen/M+PLUS+Rounded+1c
+- M PLUS 1 Code: https://fonts.google.com/specimen/M+PLUS+1+Code
+
+以前の「Rounded Mgen+」も、インストール済みならフォールバックとして使われます。フォントを変えると文字幅が変わり、改行やページ送りがずれることがあるため、執筆中の本では切り替えのタイミングに注意してください。
+
+## PR に PDF を添付する（GitHub Actions）
+
+`.github/workflows/pdf-preview.yml` を本のリポジトリの同じ場所へコピーし、`BUILD_CMD` を`npm run build`に書き換えて main へマージします。
+
+- PR に`/pdf`とコメントすると、PDF をビルドしてダウンロードのリンクを PR にコメントします（リポジトリの持ち主と共同編集者のみ）
+- push では動かないため、Actions の時間は見たいときの分しか使いません（1回あたり約6分）
+- PDF は PR ごとのプレリリース（`pr-<番号>-preview`）に最新の1つだけ置くため、iPad などの Safari でそのまま開けます
+- フォントは Google Fonts から毎回取得するため、フォントファイルをリポジトリに置く必要はありません
+
 ## Development
 
 ### Build and Start
