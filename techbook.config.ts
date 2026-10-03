@@ -18,7 +18,8 @@ const config: MiraiBookConfig = {
       name: "(名前)",
       description: `自己紹介文を書く<br />
 brタグで改行ができます。`,
-      image: "../images/(プロファイル画像を置いて指定する).png",
+      // TODO: 自分のプロフィール画像に差し替えてください
+      image: "../images/profile.png",
     },
   ],
   cover: {
