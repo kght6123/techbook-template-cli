@@ -17,6 +17,26 @@
         {{#if data.matter.color.secondary.[200]}}--secondary-color-200: {{data.matter.color.secondary.[200]}};{{/if}}
         {{#if data.matter.color.secondary.[50]}}--secondary-color-50: {{data.matter.color.secondary.[50]}};{{/if}}
       }
+      /* 別の章へのリンク（target-counter）を解決するとき、その章の running element が
+         同じ名前で拾われ、柱が別の章のものになる。名前を章ごとに分けて防ぐ。 */
+      .leftPageLeftTop { position: running(leftPageLeftTop-{{slug}}); }
+      .leftPageLeftMiddle { position: running(leftPageLeftMiddle-{{slug}}); }
+      .leftPageLeftBottom { position: running(leftPageLeftBottom-{{slug}}); }
+      .rightPageRightTop { position: running(rightPageRightTop-{{slug}}); }
+      .rightPageRightMiddle { position: running(rightPageRightMiddle-{{slug}}); }
+      .rightPageRightBottom { position: running(rightPageRightBottom-{{slug}}); }
+      .rightPageChapterHeader { position: running(rightPageChapterHeader-{{slug}}); }
+      @page :left {
+        @left-top { content: element(leftPageLeftTop-{{slug}}); }
+        @left-middle { content: element(leftPageLeftMiddle-{{slug}}); }
+        @left-bottom { content: element(leftPageLeftBottom-{{slug}}); }
+      }
+      @page :right {
+        @top-right { content: element(rightPageChapterHeader-{{slug}}); }
+        @right-top { content: element(rightPageRightTop-{{slug}}); }
+        @right-middle { content: element(rightPageRightMiddle-{{slug}}); }
+        @right-bottom { content: element(rightPageRightBottom-{{slug}}); }
+      }
       {{inlineStyle}}
     </style>
   </head>
