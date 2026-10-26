@@ -19,6 +19,7 @@ program
   .action(
     async ({ h3Port, syncPort, customCss }: { h3Port: string; syncPort: string; customCss: string }) => {
       console.info("dev", h3Port, syncPort, customCss);
+      (await import("./patchVivliostyle")).default();
       const main = (await import("./main")).default;
       const writeGlobalCss = (await import("./css")).default;
       main();
@@ -44,6 +45,7 @@ program
   .option("-vt, --vivliostyle-timeout <vivliostyleTimeout>", "vivliostyle build timeout (seconds)", "600")
   .action(async ({ customCss, vivliostyleTimeout }: { customCss: string, vivliostyleTimeout: string }) => {
       console.info("build", customCss, vivliostyleTimeout);
+      (await import("./patchVivliostyle")).default();
       const main = (await import("./main")).default;
       await main();
       (await import("./css")).default(customCss);
@@ -57,6 +59,7 @@ program
   .option("-p, --port <port>", "express server port number", "3000")
   .action(async ({ port }: { port: string }) => {
     console.info("viewer");
+    (await import("./patchVivliostyle")).default();
     await (await import("./viewer")).default({ port: parseInt(port) });
   });
 
