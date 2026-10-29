@@ -23,6 +23,7 @@ import { profileCompile } from "./profile";
 import "./split";
 import "./switch";
 import { docsHeadingList, rightPillarChapterList, tocCompile } from "./toc";
+import { videoRegisterHelper } from "./video";
 
 export default async function main() {
   // 引数に"-kdp"がある場合はtrueにする
@@ -35,6 +36,7 @@ export default async function main() {
   appendixRegisterHelper();
   footnoteRegisterHelper();
   pageBreakRegisterHelper();
+  videoRegisterHelper();
 
   // HTMLのテンプレートをHandlebarsで読み込む
   const chapterTemplateHtml = Handlebars.compile(

@@ -3,6 +3,7 @@ import Handlebars from 'handlebars';
 import { a as appendixTemplateHtmlPath, h as handlebarCompileOptions, b as appendixTitle, c as appendixDistPath, d as colophonTemplateHtmlPath, e as config, f as colophonDistPath, g as coverTemplateHtmlPath, i as frontCoverDistPath, j as backCoverDistPath, s as startCoverDistPath, k as endCoverDistPath, l as docsDir, m as distDir, p as processorRehype, C as CUSTOM_ID_PATTERN, n as parseTitleForCodeMeta, o as isTitleForComment, q as parseTitleForComment, t as tocDistPath, r as introductionDistPath, u as finallyDistPath, v as profileDistPath, w as vivliostyleConfig, x as publicationJson, y as simpleIntroductionTemplateHtmlPath, z as introductionTemplateHtmlPath, A as introductionDocPath, B as processor, D as finallyDocPath, E as profileTemplateHtmlPath, F as simpleChapterTemplateHtmlPath, G as chapterTemplateHtmlPath, H as lockFileDistPath } from '../index.mjs';
 import path from 'path';
 import { slug } from 'github-slugger';
+import QRCode from 'qrcode';
 import 'commander';
 import '@akebifiky/remark-simple-plantuml';
 import '@shikijs/rehype';
@@ -16,7 +17,6 @@ import 'remark-parse';
 import 'remark-rehype';
 import 'unified';
 import 'vfile-matter';
-import 'qrcode';
 import 'unist-util-visit';
 import 'jiti';
 import 'url';
@@ -654,6 +654,43 @@ Handlebars.registerHelper("default", function(options) {
   }
 });
 
+const qrSvg = (url) => {
+  const qr = QRCode.create(url, { errorCorrectionLevel: "L" });
+  const n = qr.modules.size;
+  const margin = 2;
+  const size = n + margin * 2;
+  let path = "";
+  for (let y = 0; y < n; y++) {
+    for (let x = 0; x < n; x++) {
+      if (qr.modules.get(y, x)) path += `M${x + margin} ${y + margin}h1v1h-1z`;
+    }
+  }
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${size} ${size}" shape-rendering="crispEdges"><rect width="${size}" height="${size}" fill="#fff"/><path d="${path}" fill="#000"/></svg>`;
+};
+const youtubeId = (url) => {
+  const m = url.match(/youtu\.be\/([\w-]{11})/) || url.match(/[?&]v=([\w-]{11})/) || url.match(/youtube\.com\/(?:embed|shorts)\/([\w-]{11})/);
+  return m ? m[1] : null;
+};
+const escape = Handlebars.Utils.escapeExpression;
+const videoRegisterHelper = () => {
+  Handlebars.registerHelper("video", (url, title, thumbnail) => {
+    const id = youtubeId(url);
+    const thumb = typeof thumbnail === "string" && thumbnail !== "" ? thumbnail : id ? `https://i.ytimg.com/vi/${id}/hqdefault.jpg` : "";
+    return new Handlebars.SafeString(`
+<figure class="video-figure">
+<a class="video-link" href="${escape(url)}">
+<span class="video-thumb">
+${thumb ? `<img class="video-thumb-image" src="${escape(thumb)}" alt="" />` : ""}
+<span class="video-badge" aria-hidden="true">\u52D5\u753B</span>
+<span class="video-qr">${qrSvg(url)}</span>
+</span>
+</a>
+<figcaption><span class="video-title">${escape(title)}</span><a class="video-url" href="${escape(url)}">${escape(url)}</a></figcaption>
+</figure>
+`);
+  });
+};
+
 async function main() {
   const isKDP = process.argv.indexOf("-kdp") >= 0;
   if (isKDP) console.log("run kindle direct publishing mode.");
@@ -662,6 +699,7 @@ async function main() {
   appendixRegisterHelper();
   footnoteRegisterHelper();
   pageBreakRegisterHelper();
+  videoRegisterHelper();
   const chapterTemplateHtml = Handlebars.compile(
     fs.readFileSync(
       config.size === "105mm 173mm" ? simpleChapterTemplateHtmlPath : chapterTemplateHtmlPath

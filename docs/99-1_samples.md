@@ -279,3 +279,9 @@ Page Breakは改ページです。
 \{{page-break}}
 
 ここから必ず次のページになります。`page-break`以外にも`left-break`、`right-break`があります。
+
+## Video
+
+`\{{video 'URL' 'タイトル' 'サムネイル画像'}}`で、動画を 1 つの図として差し込めます。サムネイルの右側に動画への QR、左下に「▶ 動画」のバッジを重ねます。サムネイルとキャプションの URL は、動画へのリンクになります。サムネイルを省略すると、YouTube の URL ならそのサムネイルを使います。
+
+{{video 'https://youtu.be/uCdoM0PKzfE' 'サンプル動画（サムネイルを省略して YouTube のものを使う例）'}}
