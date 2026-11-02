@@ -1149,13 +1149,7 @@ figure.qrcode-figure figcaption {
 }
 
 /* サンプルを埋め込んだQRは、紙面で読み取れる大きさが要る。
-   figure にはブラウザ既定の左右マージン（40px）が残っていて段幅より狭くなるため、
-   それを外して段の幅いっぱいに広げる。B5・2段組みで約60mm角になる。 */
-
-.embedImageFigure:has(img.qrsample) {
-  margin-left: 0px;
-  margin-right: 0px;
-}
+   段の幅いっぱいに広げる。B5・2段組みで約60mm角になる。 */
 
 .embedImageFigure img.qrsample {
   width: 100%;
@@ -1182,9 +1176,13 @@ figure.qrcode-figure figcaption {
   content: "図" counter(chapter) "-" counter(caption) ". ";
 }
 
+/* figure にはブラウザ既定の左右マージン（40px）が残っていて、画像が段の幅より狭くなるため外す */
+
 .embedImageFigure {
   display: block;
   text-align: center;
+  margin-left: 0px;
+  margin-right: 0px;
 }
 
 /* Mermaid、PlantUML */
