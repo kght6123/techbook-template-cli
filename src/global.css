@@ -398,6 +398,17 @@ ul.contains-task-list > li.task-list-item::before {
   position: running(rightPageRightMiddle);
 }
 
+/* 右端の章のつまみ。「10章」のような2桁の章でも折り返さないように、
+   左右の余白を詰めて1行に収め、どのつまみも同じ高さにする */
+
+.chapterTab {
+  white-space: nowrap;
+  padding-left: 0px;
+  padding-right: 0px;
+  line-height: 1.25rem;
+  letter-spacing: -0.02em;
+}
+
 .rightPageRightBottom {
   position: running(rightPageRightBottom);
 }
