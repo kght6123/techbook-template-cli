@@ -1191,6 +1191,28 @@ figure.qrcode-figure figcaption {
   border-width: 0px;
 }
 
+/* 1ページ全体を使う画像は、2段組みの章でも段をまたいで1ページに出す。
+   alt が空の画像は figure で囲まれず <p> の中に入るので、どちらでも効くようにする */
+
+.colmun-count-2 :is(.embedImageFigure, p):has(> img.onepage) {
+  /* Vivliostyle は column-span に対応していないので、ページフロートで段をまたぐ */
+  float-reference: page;
+  float: block-start;
+  width: 100%;
+  margin: 0;
+}
+
+.colmun-count-2 img.onepage {
+  display: block;
+  margin: 0 auto;
+  height: 200mm;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+  border-width: 0px;
+}
+
+
 .embedImageCaption {
   text-align: center;
   font-size: 0.875rem;
