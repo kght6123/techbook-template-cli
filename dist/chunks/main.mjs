@@ -84,11 +84,17 @@ const pageBreakRegisterHelper = () => {
 const chatRegisterHelper = () => {
   Handlebars.registerHelper(
     "chat",
-    (...children) => new Handlebars.SafeString(`
-  <ul class="chat">
-    ${children.length > 0 ? children.slice(0, children.length - 1).join("") : ""}
-  </ul>
-  `)
+    (...children) => (
+      // 行頭の空白や空行を残すと、直前の箇条書きの続きとして Markdown に解釈され、
+      // 吹き出しがリストの中に入ってインデントされる。行頭から書き、空行を挟まない
+      new Handlebars.SafeString(
+        `
+<ul class="chat">
+${children.slice(0, -1).map((child) => String(child).trim()).join("\n")}
+</ul>
+`
+      )
+    )
   );
   Handlebars.registerHelper(
     "chat-header",

@@ -4,13 +4,14 @@ export const chatRegisterHelper = () => {
   Handlebars.registerHelper(
     "chat",
     (...children) =>
-      new Handlebars.SafeString(`
-  <ul class="chat">
-    ${
-      children.length > 0 ? children.slice(0, children.length - 1).join("") : ""
-    }
-  </ul>
-  `),
+      // 行頭の空白や空行を残すと、直前の箇条書きの続きとして Markdown に解釈され、
+      // 吹き出しがリストの中に入ってインデントされる。行頭から書き、空行を挟まない
+      new Handlebars.SafeString(
+        `\n<ul class="chat">\n${children
+          .slice(0, -1)
+          .map((child) => String(child).trim())
+          .join("\n")}\n</ul>\n`,
+      ),
   );
 
   Handlebars.registerHelper(
