@@ -1226,6 +1226,13 @@ a.chapterCoverTitle::before {
   content: "Chapter" target-counter(attr(href), chapter) " ";
 }
 
+/* 節が多い章は、扉の中身が枠より高くなって上下にはみ出す。
+   節の一覧と説明の欄を広げて、折り返しを減らす */
+
+.chapterCover:has(li:nth-child(16)) .chapterCoverBox {
+  width: 320px;
+}
+
 /* 左柱 */
 
 a.leftPillarChapter::before {
