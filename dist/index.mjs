@@ -413,6 +413,7 @@ program.name("techbook-template-cli").description("TechBook Template CLI utiliti
 program.command("dev").description("techbook dev").option("-ph, --h3-port <port>", "h3 server port number", "3000").option("-ps, --sync-port <port>", "sync port number", "3001").option("-kdp, --kindle-direct-print", "kindle direct print mode", "false").option("-cc, --custom-css <customCss>", "custom css file name", customCssPath).action(
   async ({ h3Port, syncPort, customCss }) => {
     console.info("dev", h3Port, syncPort, customCss);
+    (await import('./chunks/patchVivliostyle.mjs')).default();
     const main = (await import('./chunks/main.mjs')).default;
     const writeGlobalCss = (await import('./chunks/css.mjs')).default;
     main();
@@ -430,6 +431,7 @@ program.command("dev").description("techbook dev").option("-ph, --h3-port <port>
 program.command("build").description("techbook build").option("-kdp, --kindle-direct-print", "kindle direct print mode", "false").option("-cc, --custom-css <customCss>", "custom css file name", customCssPath).option("-vt, --vivliostyle-timeout <vivliostyleTimeout>", "vivliostyle build timeout (seconds)", "600").action(
   async ({ customCss, vivliostyleTimeout }) => {
     console.info("build", customCss, vivliostyleTimeout);
+    (await import('./chunks/patchVivliostyle.mjs')).default();
     const main = (await import('./chunks/main.mjs')).default;
     await main();
     (await import('./chunks/css.mjs')).default(customCss);
@@ -438,6 +440,7 @@ program.command("build").description("techbook build").option("-kdp, --kindle-di
 );
 program.command("viewer").description("techbook viewer").option("-p, --port <port>", "express server port number", "3000").action(async ({ port }) => {
   console.info("viewer");
+  (await import('./chunks/patchVivliostyle.mjs')).default();
   await (await import('./chunks/viewer.mjs')).default({ port: parseInt(port) });
 });
 program.command("browser").description("techbook browser").option("-p, --port <port>", "browser sync port number", "3001").option("-pp, --proxy-port <proxyPort>", "browser proxy port number", "3000").action(async ({ port, proxyPort }) => {
