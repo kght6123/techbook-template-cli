@@ -103,10 +103,10 @@
       <div class="text-right pr-6">
         <a class="chapterCoverTitle border-t-0 border-l-0 border-r-0 border-b-[2px] border-solid border-white pb-1 px-2 text-white font-semibold no-underline" href="#{{slug}}">{{title}}</a>
       </div>
-      <div class="pr-6 w-[220px]">
+      <div class="chapterCoverBox pr-6 w-[220px]">
         <p class="text-white">{{#if data.matter.description1}}{{data.matter.description1}}{{else}}{{split data.matter.description 0 " " 2}}{{/if}}</p>
       </div>
-      <div class="pr-6 w-[220px] bg-primary-400 rounded-s-lg mr-6">
+      <div class="chapterCoverBox pr-6 w-[220px] bg-primary-400 rounded-s-lg mr-6">
         <ol class="text-white">
           {{#each h2HeadingList}}
           <li>
@@ -115,7 +115,7 @@
           {{/each}}
         </ol>
       </div>
-      <div class="pr-6 w-[220px]">
+      <div class="chapterCoverBox pr-6 w-[220px]">
         <p class="text-white">{{#if data.matter.description2}}{{data.matter.description2}}{{else}}{{split data.matter.description 1 " " 2}}{{/if}}</p>
       </div>
     </div>
