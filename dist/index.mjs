@@ -247,17 +247,16 @@ const imageApplyAttributesFromTitlePlugin = () => {
 
 const extractAttributes = (altText) => {
   const attributes = {};
-  let cleanAltText = altText;
-  const attributeParts = altText.split(",");
-  for (const part of attributeParts) {
-    const [key, value] = part.split(":");
-    if (key && value) {
-      attributes[key.trim()] = value.trim();
+  const altParts = [];
+  for (const part of altText.split(",")) {
+    const match = part.trim().match(/^([A-Za-z][\w-]*):(?!\/\/)(.+)$/);
+    if (match) {
+      attributes[match[1]] = match[2].trim();
     } else {
-      cleanAltText = part.trim();
+      altParts.push(part.trim());
     }
   }
-  return [cleanAltText, attributes];
+  return [altParts.join(","), attributes];
 };
 const imageAttributesToTitlePlugin = () => {
   return (tree) => {

@@ -13,19 +13,20 @@ const extractAttributes = (
   altText: string,
 ): [string, Record<string, string>] => {
   const attributes: Record<string, string> = {};
-  let cleanAltText = altText;
+  const altParts: string[] = [];
 
-  const attributeParts = altText.split(",");
-  for (const part of attributeParts) {
-    const [key, value] = part.split(":");
-    if (key && value) {
-      attributes[key.trim()] = value.trim();
+  for (const part of altText.split(",")) {
+    // 「className:qrcode」の形だけを属性と見なす。
+    // 「https://...」のような URL は「:」の後が「//」で始まるので、alt の文字として残す
+    const match = part.trim().match(/^([A-Za-z][\w-]*):(?!\/\/)(.+)$/);
+    if (match) {
+      attributes[match[1]] = match[2].trim();
     } else {
       // この部分が画像の実際のaltテキストとして扱われます
-      cleanAltText = part.trim();
+      altParts.push(part.trim());
     }
   }
-  return [cleanAltText, attributes];
+  return [altParts.join(","), attributes];
 };
 
 const imageAttributesToTitlePlugin: Plugin = () => {
