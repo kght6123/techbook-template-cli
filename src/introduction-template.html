@@ -44,10 +44,10 @@
         {{#each rightPillarChapterList}}
         {{#switch this.html}}
         {{#case ""}}
-        <span class="p-2 w-10 bg-primary-50">&nbsp;</span>
+        <span class="chapterTab p-2 w-10 bg-primary-50">&nbsp;</span>
         {{/case}}
         {{#default}}
-        <a class="no-underline bg-primary-500 p-2 w-10 text-center text-white font-semibold">{{this.chapterCount}}章</a>
+        <a class="chapterTab no-underline bg-primary-500 p-2 w-10 text-center text-white font-semibold">{{this.chapterCount}}章</a>
         {{/default}}
         {{/switch}}
         {{/each}}
